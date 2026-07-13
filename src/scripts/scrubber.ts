@@ -12,6 +12,16 @@ function frameUrl(pattern: string, index: number): string {
   return pattern.replace('%05d', n);
 }
 
+/**
+ * Memory budget for decoded frames. Decoding every frame of a long 1080p
+ * flipbook as ImageBitmaps pins gigabytes of RAM and freezes the tab, so we
+ * keep a spine of evenly spaced frames (instant scrub fallback anywhere on
+ * the timeline) plus a sliding window around the current frame, and evict
+ * the rest.
+ */
+const CACHE_BYTES = 360 * 1024 * 1024;
+const SPINE_STEP = 8;
+
 export class FlipbookScrubber {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
@@ -27,6 +37,8 @@ export class FlipbookScrubber {
   private onReady?: () => void;
   private onFirstPaint?: () => void;
   private readyFired = false;
+  private maxCached = 64;
+  private spineCount: number;
 
   constructor(
     canvas: HTMLCanvasElement,
@@ -45,8 +57,32 @@ export class FlipbookScrubber {
     this.onProgress = callbacks?.onProgress;
     this.onReady = callbacks?.onReady;
     this.onFirstPaint = callbacks?.onFirstPaint;
+    this.spineCount = Math.ceil(manifest.frameCount / SPINE_STEP);
     this.resize();
     window.addEventListener('resize', this.handleResize);
+  }
+
+  private isSpine(i: number): boolean {
+    return i % SPINE_STEP === 0 || i === this.manifest.frameCount - 1;
+  }
+
+  /** Evict the cached non-spine frame farthest from the current frame. */
+  private evict() {
+    while (this.bitmaps.size > this.maxCached) {
+      let victim = -1;
+      let worst = -1;
+      for (const key of this.bitmaps.keys()) {
+        if (this.isSpine(key)) continue;
+        const d = Math.abs(key - Math.max(this.current, 0));
+        if (d > worst) {
+          worst = d;
+          victim = key;
+        }
+      }
+      if (victim < 0) return;
+      this.bitmaps.get(victim)?.close();
+      this.bitmaps.delete(victim);
+    }
   }
 
   private handleResize = () => {
@@ -65,8 +101,12 @@ export class FlipbookScrubber {
   }
 
   private reportProgress() {
-    this.onProgress?.(this.loaded.size, this.manifest.frameCount);
-    if (!this.readyFired && this.loaded.size >= this.manifest.frameCount) {
+    const spineLoaded = Math.min(
+      [...this.loaded].filter((i) => this.isSpine(i)).length,
+      this.spineCount,
+    );
+    this.onProgress?.(spineLoaded, this.spineCount);
+    if (!this.readyFired && spineLoaded >= this.spineCount) {
       this.readyFired = true;
       this.onReady?.();
     }
@@ -77,13 +117,30 @@ export class FlipbookScrubber {
     this.loading.add(i);
 
     try {
-      const img = new Image();
-      img.decoding = 'async';
-      img.src = this.src(i);
-      await img.decode();
-      const bitmap = await createImageBitmap(img);
+      const res = await fetch(this.src(i));
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      let bitmap = await createImageBitmap(await res.blob());
+      // keep no larger than the canvas needs (cover fit, never upscale)
+      const scale = Math.min(
+        1,
+        Math.max(this.canvas.width / bitmap.width, this.canvas.height / bitmap.height),
+      );
+      if (scale < 0.95) {
+        const resized = await createImageBitmap(bitmap, {
+          resizeWidth: Math.max(1, Math.round(bitmap.width * scale)),
+          resizeHeight: Math.max(1, Math.round(bitmap.height * scale)),
+          resizeQuality: 'medium',
+        });
+        bitmap.close();
+        bitmap = resized;
+      }
+      this.maxCached = Math.max(
+        24,
+        Math.floor(CACHE_BYTES / (bitmap.width * bitmap.height * 4)),
+      );
       this.bitmaps.set(i, bitmap);
       this.loaded.add(i);
+      this.evict();
       this.reportProgress();
 
       if (this.current === -1 && i === 0) {
@@ -99,12 +156,10 @@ export class FlipbookScrubber {
   }
 
   private decodeAhead(from: number) {
-    const ahead = 4;
+    const ahead = 6;
     for (let j = 1; j <= ahead; j++) {
-      const idx = from + j;
-      if (idx < this.manifest.frameCount) {
-        this.scheduleDecode(idx);
-      }
+      if (from + j < this.manifest.frameCount) this.scheduleDecode(from + j);
+      if (j <= 2 && from - j >= 0) this.scheduleDecode(from - j);
     }
   }
 
@@ -121,38 +176,19 @@ export class FlipbookScrubber {
     if (this.preloadStarted) return;
     this.preloadStarted = true;
 
+    // spine only — the rest streams in on demand around the scrub position
     this.scheduleDecode(0);
-    for (let i = 0; i < this.manifest.frameCount; i += 8) {
+    for (let i = 0; i < this.manifest.frameCount; i += SPINE_STEP) {
       this.scheduleDecode(i);
     }
-    let i = 0;
-    const fill = () => {
-      let done = 0;
-      while (i < this.manifest.frameCount && done < 6) {
-        this.scheduleDecode(i);
-        i++;
-        done++;
-      }
-      if (i < this.manifest.frameCount) {
-        if ('requestIdleCallback' in window) {
-          requestIdleCallback(fill);
-        } else {
-          setTimeout(fill, 60);
-        }
-      }
-    };
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(fill);
-    } else {
-      setTimeout(fill, 200);
-    }
+    this.scheduleDecode(this.manifest.frameCount - 1);
   }
 
   nearestLoaded(i: number): number {
-    if (this.loaded.has(i)) return i;
+    if (this.bitmaps.has(i)) return i;
     for (let d = 1; d < this.manifest.frameCount; d++) {
-      if (this.loaded.has(i - d)) return i - d;
-      if (this.loaded.has(i + d)) return i + d;
+      if (this.bitmaps.has(i - d)) return i - d;
+      if (this.bitmaps.has(i + d)) return i + d;
     }
     return -1;
   }
@@ -170,6 +206,7 @@ export class FlipbookScrubber {
 
   draw(i: number) {
     const j = this.nearestLoaded(i);
+    if (j !== i) this.scheduleDecode(i);
     if (j < 0) return;
 
     this.drawnIndex = i;

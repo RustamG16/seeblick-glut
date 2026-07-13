@@ -23,7 +23,7 @@ function initLenis() {
   ScrollTrigger.scrollerProxy(document.documentElement, {
     scrollTop(value) {
       if (arguments.length) {
-        lenis.scrollTo(value, { immediate: true });
+        lenis.scrollTo(value ?? 0, { immediate: true });
       }
       return lenis.scroll;
     },
