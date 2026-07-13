@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.astro/
+public/media/*
+!public/media/.gitkeep
+public/assets/hero-sear/*
+public/assets/hero-sear-mobile/*
+public/assets/tour/*
+public/assets/tour-mobile/*
+!public/assets/.gitkeep
+assets-in/
+assets-out/*
+!assets-out/.gitkeep
+!assets-out/manifest.json

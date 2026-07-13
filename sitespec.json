@@ -1,0 +1,38 @@
+{
+  "specVersion": "0.1",
+  "buildId": "seeblick-glut-001",
+  "archetype": "VENUE",
+  "grammar": "ORBIT-ambient",
+  "brandspecRef": "brandspec.json",
+  "videoBackend": "manual-flow",
+  "shots": [
+    { "id": "0A", "role": "identity-still", "type": "image", "aspect": "16:9", "gate": 1, "description": "Ember-seared beef edge + Wörthersee window reflection, dark Alpine-modern interior" },
+    { "id": "1", "role": "hero-sear", "type": "video", "aspect": "16:9", "duration": 8, "usage": "scrub:hero", "chain": { "startFrame": "0A" } },
+    { "id": "2", "role": "the-room", "type": "video", "aspect": "16:9", "duration": 8, "usage": "autoplay-loop-bg:story" },
+    { "id": "3", "role": "the-craft", "type": "video", "aspect": "16:9", "duration": 8, "usage": "autoplay-loop-bg:craft" }
+  ],
+  "frameSpec": {
+    "hero": { "fps": 20, "width": 1600, "webpQuality": 75, "targetPayloadMB": [8, 15], "expectedFrames": 160 },
+    "heroMobile": { "everyNth": 2, "width": 960, "webpQuality": 70, "expectedFrames": 80 }
+  },
+  "scaffold": [
+    { "section": "hero", "bg": "scrub:1", "content": "name + motto Feuer. See. Sonst nichts., scroll hint, progress bar" },
+    { "section": "story", "bg": "loop:2", "content": "pinned narrative over room clip — lake light, Lendkanal, twelve dishes" },
+    { "section": "menu", "content": "2-col refined grid desktop, single column mobile, EUR prices public" },
+    { "section": "craft", "bg": "loop:3", "content": "hands, fire, plating — sensory copy block" },
+    { "section": "practical", "content": "hours, Lendkanal 12 address, parking, phone, map link" },
+    { "section": "reserve", "content": "booking form CTA — date, time, guests, name, phone, notes" }
+  ],
+  "copySlots": {
+    "motto": "Feuer. See. Sonst nichts.",
+    "storyLead": "Zwölf Gänge. Ein Feuer. Der See durch das Glas.",
+    "cta": "Tisch reservieren"
+  },
+  "uniqueness": {
+    "typePairing": "Cormorant Garamond + Source Sans 3 (elegant serif vs lab/000 Anton+Inter)",
+    "layoutMutations": ["2-col menu grid", "practical info block", "reservation form finale vs stats/pillars/work cards"],
+    "motionSignature": "ambient ORBIT scrub, menu IO stagger — no glitch seam, no custom cursor",
+    "texture": "film grain only, no screen-blend cursor",
+    "accentRule": "ember #E85D2F on fire moments, prices, CTA, progress only — vs lab/000 acid green everywhere"
+  }
+}

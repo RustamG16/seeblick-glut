@@ -1,0 +1,367 @@
+---
+import { site } from '../content/site';
+import manifest from '../../assets-out/manifest.json';
+
+const { tour, assets } = site;
+const { events } = tour;
+
+const pad = (n: number) => String(n).padStart(5, '0');
+const legPoster = (frame: number) => assets.tourFrames.desktopPattern.replace('%05d', pad(frame));
+const legPosterMobile = (frame: number) =>
+  assets.tourFrames.mobilePattern.replace('%05d', pad(frame));
+
+const marqueeLine = [...events.marquee, ...events.marquee].join(' · ') + ' · ';
+---
+
+<section class="tour" id="tour" aria-label={tour.ariaLabel}>
+  <div class="tour__stage" data-tour-stage>
+    <picture class="tour__poster-wrap" aria-hidden="true">
+      <source
+        srcset={legPosterMobile(manifest.legs[0].startFrame)}
+        media="(max-width: 768px)"
+        type="image/jpeg"
+      />
+      <img
+        class="tour__poster"
+        data-tour-poster
+        src={legPoster(manifest.legs[0].startFrame)}
+        alt=""
+        width={manifest.width}
+        height={manifest.height}
+        loading="lazy"
+        decoding="async"
+      />
+    </picture>
+    <canvas class="tour__canvas" data-tour-canvas aria-hidden="true"></canvas>
+    <div class="tour__dip" data-tour-dip aria-hidden="true"></div>
+    <div class="tour__vignette" aria-hidden="true"></div>
+    <div class="tour__intro" data-tour-intro aria-hidden="true">
+      <p class="tour__intro-line display-lg" aria-label={`${tour.preBeat.a} ${tour.preBeat.b}`}>
+        <span class="tour__intro-word" data-prebeat-a>{tour.preBeat.a}</span>
+        <span class="tour__intro-word tour__intro-word--b" data-prebeat-b>{tour.preBeat.b}</span>
+      </p>
+    </div>
+    <p class="tour__kicker kicker" aria-hidden="true">{tour.kicker}</p>
+    <div class="tour__captions" aria-hidden="true">
+      {manifest.legs.map((leg, i) => (
+        <div class="tour__caption" data-tour-caption={leg.id}>
+          <span class="tour__caption-num">
+            {String(i + 1).padStart(2, '0')} / {String(manifest.legs.length).padStart(2, '0')}
+          </span>
+          <span class="tour__caption-title display-lg" data-caption-title>{leg.caption}</span>
+          <p class="tour__caption-sub" data-caption-sub>{tour.legMeta[leg.id]?.sub}</p>
+        </div>
+      ))}
+    </div>
+    <i class="tour__progress" data-tour-progress aria-hidden="true"></i>
+    <div class="tour__load" data-tour-load aria-hidden="true">
+      <i class="tour__load-bar"></i>
+    </div>
+  </div>
+
+  <div class="tour__fallback section">
+    <div class="section__inner">
+      <p class="kicker">{tour.kicker}</p>
+      {manifest.legs.map((leg) => (
+        <figure class="tour__fallback-item">
+          <picture>
+            <source
+              srcset={legPosterMobile(leg.startFrame)}
+              media="(max-width: 768px)"
+              type="image/jpeg"
+            />
+            <img
+              src={legPoster(leg.startFrame)}
+              alt={leg.caption}
+              width={manifest.width}
+              height={manifest.height}
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
+          <figcaption>
+            <span class="display-md">{leg.caption}</span>
+            <span class="tour__fallback-sub">{tour.legMeta[leg.id]?.sub}</span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="tour-events section" id="tour-events" aria-labelledby="tour-events-title">
+  <div class="section__inner tour-events__inner">
+    <p class="kicker" data-reveal>{events.kicker}</p>
+    <h2 class="display-lg" id="tour-events-title" data-reveal>{events.headline}</h2>
+    <p class="body-lg tour-events__body" data-reveal>{events.body}</p>
+  </div>
+  <div class="tour-events__marquee" data-reveal aria-hidden="true">
+    <div class="tour-events__track">
+      <span>{marqueeLine}</span>
+      <span>{marqueeLine}</span>
+    </div>
+  </div>
+  <div class="section__inner tour-events__inner">
+    <a class="btn tour-events__cta" href={events.cta.href} data-reveal>{events.cta.label}</a>
+  </div>
+</section>
+
+<style>
+  /* ---- stage hidden until JS activates the scrub; fallback shown ---- */
+  .tour__stage {
+    display: none;
+  }
+
+  .tour--active .tour__stage {
+    display: flex;
+  }
+
+  .tour--active .tour__fallback {
+    display: none;
+  }
+
+  /* ---- intro beat (over the stage, before the video reveals) ---- */
+  .tour__intro {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  .tour__intro-line {
+    position: relative;
+    text-align: center;
+  }
+
+  .tour__intro-word {
+    display: block;
+    will-change: opacity, transform;
+  }
+
+  .tour__intro-word--b {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    color: var(--accent);
+  }
+
+  /* ---- stage ---- */
+  .tour__stage {
+    position: relative;
+    height: 100vh;
+    height: 100dvh;
+    align-items: flex-end;
+    justify-content: flex-start;
+    overflow: hidden;
+  }
+
+  .tour__poster-wrap,
+  .tour__canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .tour__poster {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+  }
+
+  .tour__poster.is-hidden {
+    opacity: 0;
+  }
+
+  .tour__canvas {
+    display: block;
+  }
+
+  .tour__dip {
+    position: absolute;
+    inset: 0;
+    background: var(--bg);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .tour__vignette {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--bg) 30%, transparent) 0%,
+      transparent 35%,
+      transparent 60%,
+      color-mix(in srgb, var(--bg) 72%, transparent) 100%
+    );
+    pointer-events: none;
+  }
+
+  .tour__kicker {
+    position: absolute;
+    top: clamp(24px, 5vh, 48px);
+    left: clamp(24px, 5vw, 48px);
+    margin: 0;
+    z-index: 2;
+  }
+
+  .tour__captions {
+    position: relative;
+    z-index: 2;
+    padding: 0 clamp(24px, 5vw, 48px) clamp(48px, 10vh, 96px);
+  }
+
+  .tour__caption {
+    position: absolute;
+    bottom: clamp(48px, 10vh, 96px);
+    left: clamp(24px, 5vw, 48px);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    opacity: 0;
+    will-change: opacity;
+  }
+
+  .tour__caption-num {
+    font-size: 11px;
+    letter-spacing: 0.32em;
+    color: var(--accent);
+  }
+
+  .tour__caption-title {
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    transform-origin: left bottom;
+    white-space: nowrap;
+    will-change: transform, letter-spacing;
+  }
+
+  .tour__caption-sub {
+    font-size: clamp(14px, 1.6vw, 17px);
+    color: var(--text-dim);
+    max-width: 40ch;
+    opacity: 0;
+    will-change: opacity, transform;
+  }
+
+  .tour__progress {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    background: var(--accent);
+    transform: scaleY(0);
+    transform-origin: top;
+    z-index: 3;
+  }
+
+  .tour__load {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: color-mix(in srgb, var(--accent) 15%, transparent);
+    z-index: 3;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+
+  .tour__load.is-done {
+    opacity: 0;
+  }
+
+  .tour__load-bar {
+    display: block;
+    height: 100%;
+    width: 0%;
+    background: var(--accent);
+    transition: width 0.15s linear;
+  }
+
+  /* ---- static fallback (no JS / reduced motion) ---- */
+  .tour__fallback-item {
+    margin: 0 0 clamp(32px, 6vw, 64px);
+  }
+
+  .tour__fallback-item img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .tour__fallback-item figcaption {
+    margin-top: 16px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .tour__fallback-sub {
+    font-size: 15px;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    color: var(--text-dim);
+  }
+
+  /* ---- events ---- */
+  .tour-events__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: flex-start;
+  }
+
+  .tour-events__body {
+    margin-top: 8px;
+  }
+
+  .tour-events__marquee {
+    overflow: hidden;
+    margin: clamp(40px, 8vw, 72px) 0;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+  }
+
+  .tour-events__track {
+    display: inline-flex;
+    white-space: nowrap;
+    font-family: var(--display);
+    font-size: clamp(22px, 3vw, 36px);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--text) 30%, transparent);
+    animation: tour-marquee 48s linear infinite;
+    will-change: transform;
+  }
+
+  .tour-events__marquee:hover .tour-events__track {
+    animation-play-state: paused;
+  }
+
+  @keyframes tour-marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tour-events__track {
+      animation: none;
+    }
+  }
+
+  .tour-events__cta {
+    margin-top: 8px;
+  }
+</style>

@@ -1,0 +1,72 @@
+---
+import { site, buildJsonLd } from '../content/site';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  preloadPoster?: string | false;
+}
+
+const {
+  title = site.meta.title,
+  description = site.meta.description,
+  preloadPoster = site.assets.heroVideo.posterWebp,
+} = Astro.props;
+
+const jsonLd = buildJsonLd();
+const ogImage = new URL(site.meta.ogImage, site.meta.url).href;
+---
+
+<!doctype html>
+<html lang={site.lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={site.meta.url} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="de_AT" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:url" content={site.meta.url} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Source+Sans+3:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    {preloadPoster ? (
+      <link rel="preload" as="image" href={preloadPoster} fetchpriority="high" />
+    ) : null}
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+    <style
+      is:global
+      set:html={`:root {
+  --color-bg: ${site.tokens.bg};
+  --color-text: ${site.tokens.text};
+  --color-accent: ${site.tokens.accent};
+  --font-display: ${site.tokens.typeDisplay};
+  --font-body: ${site.tokens.typeBody};
+}`}
+    />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+    <div class="grain" aria-hidden="true"></div>
+    <slot />
+    <script>
+      import '../scripts/main.ts';
+    </script>
+  </body>
+</html>

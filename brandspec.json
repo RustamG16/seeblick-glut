@@ -1,0 +1,29 @@
+{
+  "specVersion": "0.1",
+  "client": "SEEBLICK & GLUT",
+  "name": "SEEBLICK & GLUT",
+  "oneLiner": "Wood-fire restaurant on the Wörthersee shore, Klagenfurt",
+  "audience": "Lake-season couples and Carinthia food tourists seeking fire + view in one room — not hotel dining, not Stadt gastro",
+  "differentiator": "Open hearth and floor-to-ceiling Lendkanal glass in a single dining room; twelve-dish menu, no schnitzel wallpaper",
+  "mood": "premium",
+  "voice": {
+    "tone": "sparse, sensory, Carinthian direct",
+    "vocabulary": ["Feuer", "See", "Glut", "Reinanke", "Lendkanal", "Saibling", "Kasnudeln"],
+    "neverSay": ["culinary journey", "passionate", "artisanal experience", "hidden gem", "farm-to-table"]
+  },
+  "tokens": {
+    "bg": "#0C0A09",
+    "accent": "#E85D2F",
+    "text": "#F5F0E8",
+    "typeDisplay": "Cormorant Garamond",
+    "typeBody": "Source Sans 3",
+    "texture": "film grain",
+    "accentRule": "ember accent only: live fire moments, prices, primary CTA, scroll progress — never decorative fill"
+  },
+  "identityAssets": {
+    "logo": null,
+    "photos": ["dining room sunset iPhone", "chalkboard menu", "Sommer 2026 pricelist PDF"],
+    "referenceSites": ["Steirereck (restraint)", "Seehotel Ambach terrace light", "Amanzoe property pages"]
+  },
+  "upsellNotes": "Daughter does casual Instagram — retainer seed for seasonal menu updates + terrace opening content"
+}

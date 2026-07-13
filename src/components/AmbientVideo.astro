@@ -1,0 +1,69 @@
+---
+import type { VideoAssets } from '../content/site';
+
+interface Props {
+  desktop: string;
+  mobile: string;
+  poster: string;
+  posterWebp: string;
+  lazy?: boolean;
+  fill?: boolean;
+  priority?: boolean;
+  alt?: string;
+  id?: string;
+}
+
+const {
+  desktop,
+  mobile,
+  poster,
+  posterWebp,
+  lazy = false,
+  fill = false,
+  priority = false,
+  alt = '',
+  id,
+} = Astro.props;
+---
+
+<div
+  class:list={['video-wrap', { 'video-wrap--fill': fill }]}
+  style={fill ? undefined : 'aspect-ratio: 16/9'}
+  data-ambient-video
+  data-lazy={lazy ? 'true' : 'false'}
+  data-desktop={desktop}
+  data-mobile={mobile}
+  id={id}
+>
+  <picture>
+    <source srcset={posterWebp} type="image/webp" />
+    <img
+      class="video-poster"
+      src={poster}
+      alt={alt}
+      width="1920"
+      height="1080"
+      loading={lazy ? 'lazy' : 'eager'}
+      fetchpriority={priority ? 'high' : 'auto'}
+      decoding={priority ? 'sync' : 'async'}
+    />
+  </picture>
+  <video
+    class="ambient-video"
+    muted
+    autoplay={!lazy}
+    loop
+    playsinline
+    preload="metadata"
+    poster={poster}
+    hidden={lazy}
+    aria-hidden="true"
+  >
+    {!lazy && (
+      <>
+        <source src={mobile} media="(max-width: 768px)" type="video/mp4" />
+        <source src={desktop} type="video/mp4" />
+      </>
+    )}
+  </video>
+</div>

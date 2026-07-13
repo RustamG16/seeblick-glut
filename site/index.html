@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEEBLICK &amp; GLUT — Wood-fire am Wörthersee</title>
+<meta name="description" content="Wood-fire restaurant on the Wörthersee shore, Klagenfurt. Feuer. See. Sonst nichts.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Source+Sans+3:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="frames/hero/frame_0001.webp">
+<link rel="stylesheet" href="style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "name": "SEEBLICK & GLUT",
+  "description": "Wood-fire restaurant on the Wörthersee shore, Klagenfurt",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Lendkanal 12",
+    "addressLocality": "Klagenfurt am Wörthersee",
+    "postalCode": "9020",
+    "addressCountry": "AT"
+  },
+  "telephone": "+43-463-555-012",
+  "servesCuisine": "Alpine-Adriatic",
+  "priceRange": "€€€"
+}
+</script>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="topbar">
+  <span class="topbar__mark">SEEBLICK &amp; GLUT</span>
+  <a class="topbar__cta" href="#reserve">Reservieren</a>
+</header>
+
+<!-- HERO — ambient orbit scrub -->
+<section class="hero" id="hero">
+  <div class="hero__sticky">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero__content">
+      <h1 class="hero__name" id="hero-name">
+        <span class="hero__line" data-line>SEEBLICK</span>
+        <span class="hero__line hero__line--amp">&amp;</span>
+        <span class="hero__line" data-line>GLUT</span>
+      </h1>
+      <p class="hero__motto" id="hero-motto">Feuer. See. Sonst nichts.</p>
+    </div>
+    <div class="hero__hint" id="hero-hint"><span></span>SCROLLEN</div>
+    <div class="hero__progress" id="hero-progress"><i></i></div>
+  </div>
+</section>
+
+<!-- STORY — pinned over room clip -->
+<section class="story" id="story">
+  <div class="story__sticky">
+    <div class="story__bg" data-video="media/the-room.mp4"><div class="bg-placeholder bg-placeholder--room"></div></div>
+    <div class="story__copy">
+      <p class="story__kicker">Lendkanal 12</p>
+      <h2 class="story__title">Zwölf Gänge.<br>Ein Feuer.<br>Der See durch das Glas.</h2>
+      <p class="story__body">Carinthian dry-aged beef over open flame. Reinanke from the Wörthersee. Kasnudeln the way your grandmother meant — one reinterpretation, not a theme. No hotel dining room. No Stadt gastro pub. Just the hearth and the lake.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MENU — 2-col refined grid -->
+<section class="menu" id="menu">
+  <header class="menu__header">
+    <p class="menu__kicker">Speisekarte</p>
+    <h2 class="menu__title">Sommer 2026</h2>
+  </header>
+  <div class="menu__grid">
+    <div class="menu__col">
+      <h3 class="menu__cat">Vorspeisen</h3>
+      <ul class="menu__list">
+        <li class="menu__item" data-reveal>
+          <span class="menu__name">Rote Rübe, Bergkäse, Kernöl</span>
+          <span class="menu__price">€14</span>
+        </li>
+        <li class="menu__item" data-reveal>
+          <span class="menu__name">Saibling-Tatar, Meerrettich, Dill</span>
+          <span class="menu__price">€16</span>
+        </li>
+        <li class="menu__item" data-reveal>
+          <span class="menu__name">Suppe vom Rauch — Karotte, Thymian</span>
+          <span class="menu__price">€12</span>
+        </li>
+      </ul>
+      <h3 class="menu__cat">Vom Feuer</h3>
+      <ul class="menu__list">
+        <li class="menu__item" data-reveal>
+          <span class="menu__name">Dry-aged Rinderfilet 250g</span>
+          <span class="menu__price">€48</span>
+        </li>
+        <li class="menu__item" data-reveal>
+          <span class="menu__name">Lammkarree, Rosmarin, Knoblauch</span>
+          <span class="menu__price">€38</span>
+        </li>
+        <li class="menu__item" data-reveal>
+          <span class="menu__name">Entenbrust, Sauerkirsch, Port</span>
+          <span class="menu__price">€34</span>
+        </li>
+      </ul>
+    </div>
+    <div class="menu__col">
+      <h3 class="menu__cat">Vom See</h3>
+      <ul class="menu__list">
+        <li class="menu__item" data-reveal>
+          <span class="menu__name">Reinanke vom Grill, Zitrone-Dill</span>
+          <span class="menu__price">€32</span>
+        </li>
+        <li class="menu__item" data-reveal>
+          <span class="menu__name">Forelle Müllerin Art, Butter, Petersilie</span>
+          <span class="menu__price">€28</span>
+        </li>
+        <li class="menu__item" data-reveal>
+          <span class="menu__name">Kasnudeln, braune Butter, Salbei</span>
+          <span class="menu__price">€18</span>
+        </li>
+      </ul>
+      <h3 class="menu__cat">Beilagen &amp; Desserts</h3>
+      <ul class="menu__list">
+        <li class="menu__item" data-reveal>
+          <span class="menu__name">Ofenkartoffel, Sauerrahm</span>
+          <span class="menu__price">€8</span>
+        </li>
+        <li class="menu__item" data-reveal>
+          <span class="menu__name">Grüner Salat, Kernöl-Vinaigrette</span>
+          <span class="menu__price">€9</span>
+        </li>
+        <li class="menu__item" data-reveal>
+          <span class="menu__name">Topfenknödel, Zwetschgenröster</span>
+          <span class="menu__price">€12</span>
+        </li>
+        <li class="menu__item" data-reveal>
+          <span class="menu__name">Schokolade, Meersalz, Öl</span>
+          <span class="menu__price">€11</span>
+        </li>
+      </ul>
+      <p class="menu__note" data-reveal>Tagesmenü 5 Gänge — €78 · Terrace May–September, weather permitting</p>
+    </div>
+  </div>
+</section>
+
+<!-- CRAFT — plating clip -->
+<section class="craft" id="craft">
+  <div class="craft__bg" data-video="media/the-craft.mp4"><div class="bg-placeholder bg-placeholder--craft"></div></div>
+  <div class="craft__copy">
+    <p class="craft__kicker">Die Glut</p>
+    <h2 class="craft__title">Hände. Feuer.<br>Nichts dazwischen.</h2>
+    <p class="craft__body">The fire decides the menu. What the lake offers that week. What the butcher dry-aged long enough. Twelve dishes — no more, no less.</p>
+  </div>
+</section>
+
+<!-- PRACTICAL — hours, address, parking -->
+<section class="practical" id="practical">
+  <div class="practical__grid">
+    <div class="practical__block">
+      <h3 class="practical__label">Öffnungszeiten</h3>
+      <p>Dienstag – Sonntag<br>12:00 – 14:30 · 18:00 – 22:30</p>
+      <p class="practical__muted">Montag Ruhetag</p>
+    </div>
+    <div class="practical__block">
+      <h3 class="practical__label">Adresse</h3>
+      <p>Lendkanal 12<br>9020 Klagenfurt am Wörthersee</p>
+      <a class="practical__link" href="https://maps.google.com/?q=Lendkanal+12,+9020+Klagenfurt" target="_blank" rel="noopener noreferrer">Auf Karte anzeigen</a>
+    </div>
+    <div class="practical__block">
+      <h3 class="practical__label">Parken &amp; Terrasse</h3>
+      <p>40 Plätze am Lendkanal — kostenlos ab 18:00</p>
+      <p class="practical__muted">Seeterrasse Mai – September, wetterabhängig</p>
+    </div>
+    <div class="practical__block">
+      <h3 class="practical__label">Kontakt</h3>
+      <p><a href="tel:+43463555012">+43 463 555 012</a></p>
+      <p class="practical__muted">Glutenfrei markiert — bitte bei Reservierung angeben</p>
+    </div>
+  </div>
+</section>
+
+<!-- RESERVE — booking form CTA -->
+<section class="reserve" id="reserve">
+  <h2 class="reserve__title">Tisch reservieren</h2>
+  <p class="reserve__sub">Freitag und Samstag früh buchen — wir antworten innerhalb von 24 Stunden.</p>
+  <form class="reserve__form" id="reserve-form" action="#" novalidate>
+    <div class="reserve__row">
+      <label class="reserve__field">
+        <span>Datum</span>
+        <input type="date" name="date" required>
+      </label>
+      <label class="reserve__field">
+        <span>Uhrzeit</span>
+        <input type="time" name="time" required>
+      </label>
+      <label class="reserve__field">
+        <span>Gäste</span>
+        <select name="guests" required>
+          <option value="">—</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8+</option>
+        </select>
+      </label>
+    </div>
+    <div class="reserve__row">
+      <label class="reserve__field reserve__field--wide">
+        <span>Name</span>
+        <input type="text" name="name" required autocomplete="name">
+      </label>
+      <label class="reserve__field reserve__field--wide">
+        <span>Telefon</span>
+        <input type="tel" name="phone" required autocomplete="tel">
+      </label>
+    </div>
+    <label class="reserve__field reserve__field--full">
+      <span>Anmerkungen</span>
+      <textarea name="notes" rows="3" placeholder="Allergien, Terrasse, Anlass…"></textarea>
+    </label>
+    <button class="btn btn--solid" type="submit">Anfrage senden</button>
+    <p class="reserve__toast" id="reserve-toast" role="status" aria-live="polite" hidden>Anfrage erhalten — wir melden uns.</p>
+  </form>
+  <footer class="footer">
+    <span>© 2026 SEEBLICK &amp; GLUT</span>
+    <span>Lendkanal 12 · Klagenfurt</span>
+  </footer>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
