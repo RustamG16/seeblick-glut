@@ -454,8 +454,9 @@ html {
   text-decoration: none;
   white-space: nowrap;
   opacity: 0;
+  visibility: hidden;
   transform: translateY(4px);
-  transition: opacity 300ms var(--ease-out), transform 300ms var(--ease-out);
+  transition: opacity 300ms var(--ease-out), transform 300ms var(--ease-out), visibility 0s 300ms;
 }
 
 .header__bar > .status {
@@ -470,7 +471,9 @@ html {
 .header.is-solid .header__mark,
 html:not(.js) .header__mark {
   opacity: 1;
+  visibility: visible;
   transform: none;
+  transition: opacity 300ms var(--ease-out), transform 300ms var(--ease-out), visibility 0s;
 }
 
 .header__mark em {
@@ -539,25 +542,7 @@ html:not(.js) .header__mark {
   background: #3f7d5a;
 }
 
-.status[data-open='true'] .status__dot::after {
-  content: '';
-  position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  border: 1px solid #3f7d5a;
-  animation: pulse 2.4s var(--ease-out) infinite;
-}
 
-@keyframes pulse {
-  from {
-    transform: scale(0.6);
-    opacity: 0.9;
-  }
-  to {
-    transform: scale(1.8);
-    opacity: 0;
-  }
-}
 
 /* ---------- Fenster ---------- */
 
@@ -716,8 +701,8 @@ html:not(.js) .header__mark {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 16px;
-  border-radius: 999px;
+  padding-top: var(--s-2);
+  border-top: 1px solid var(--line);
   width: max-content;
 }
 
@@ -858,14 +843,23 @@ html:not(.js) .header__mark {
 .hearth__line {
   /* Ember appearance 2: the hearth hairline fills as the column is read. */
   position: absolute;
-  left: 5px;
+  left: 4px;
   top: var(--mat);
   bottom: var(--mat);
-  width: 2px;
+  width: 4px;
+  padding: 1px;
+  background: var(--night);
+  border-radius: 1px;
+  z-index: 3;
+}
+
+.hearth__line::after {
+  content: '';
+  display: block;
+  height: 100%;
   background: var(--ember);
   transform-origin: top;
   transform: scaleY(var(--stoke, 1));
-  z-index: 3;
 }
 
 .js .hearth__line {
@@ -1082,25 +1076,15 @@ html:not(.js) .header__mark {
   isolation: isolate;
 }
 
-/* The light in the card: an ember warmth and a lake coolness behind the glass tiles. */
+/* The light in the card: candlelight from one side, lake light from the other — the two
+   lights of the room, still, behind the glass tiles. Not ember: nothing glows except fire. */
 .prakt__light {
   position: absolute;
   inset: -20%;
   z-index: -1;
-  background: radial-gradient(40% 50% at 18% 22%, rgba(232, 93, 47, 0.32), transparent 70%),
-    radial-gradient(45% 55% at 86% 78%, rgba(46, 85, 96, 0.34), transparent 70%),
-    radial-gradient(30% 30% at 70% 15%, rgba(255, 190, 140, 0.35), transparent 70%);
+  background: radial-gradient(42% 50% at 18% 20%, rgba(214, 170, 112, 0.34), transparent 70%),
+    radial-gradient(45% 55% at 86% 80%, rgba(46, 85, 96, 0.3), transparent 70%);
   filter: blur(10px);
-}
-
-.js .prakt__light {
-  animation: drift 18s var(--ease-in-out) infinite alternate;
-}
-
-@keyframes drift {
-  to {
-    transform: translate3d(4%, -3%, 0) rotate(6deg);
-  }
 }
 
 .prakt__title {
@@ -1120,7 +1104,7 @@ html:not(.js) .header__mark {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: var(--ink-3);
+  color: var(--ink-2);
   margin-bottom: 10px;
 }
 
@@ -1191,30 +1175,40 @@ html:not(.js) .header__mark {
   isolation: isolate;
 }
 
+.reserve__grid {
+  align-items: center;
+}
+
 .reserve__view {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
+  grid-column: 1 / -1;
+  grid-row: 1;
+  padding: var(--mat);
+  background: var(--night-2);
+  border: 1px solid #2a2420;
+  border-radius: var(--radius);
 }
 
 .reserve__view img {
   width: 100%;
-  height: 100%;
+  aspect-ratio: 3 / 4;
   object-fit: cover;
   object-position: 50% 45%;
-  opacity: 0.9;
 }
 
-.reserve__view::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, rgba(12, 10, 9, 0.92) 0%, rgba(12, 10, 9, 0.55) 45%, rgba(12, 10, 9, 0.15) 100%),
-    linear-gradient(0deg, var(--night) 0%, transparent 30%, transparent 75%, rgba(12, 10, 9, 0.8) 100%);
+.reserve__cap {
+  display: flex;
+  gap: 10px;
+  padding-top: 12px;
+  color: var(--paper-dim);
 }
 
 .reserve__card {
   grid-column: 1 / -1;
+  grid-row: 2;
+  margin-top: -96px;
+  margin-inline: var(--s-3);
+  position: relative;
+  z-index: 2;
   padding: var(--s-5) var(--s-4);
   display: grid;
   gap: var(--s-4);
@@ -1251,9 +1245,21 @@ html:not(.js) .header__mark {
   }
 }
 
+@media (min-width: 700px) {
+  .reserve__view img {
+    aspect-ratio: 16 / 9;
+  }
+}
+
 @media (min-width: 900px) {
+  .reserve__view {
+    grid-column: 5 / 13;
+    max-width: none;
+  }
   .reserve__card {
     grid-column: 1 / 7;
+    grid-row: 1;
+    margin: 0;
   }
 }
 
@@ -1305,6 +1311,8 @@ html:not(.js) .header__mark {
   gap: 12px;
   padding: 10px 16px;
   border-radius: 999px;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
   color: var(--ink-2);
   opacity: 0;
   transform: translateY(8px);
@@ -1358,11 +1366,14 @@ html:not(.js) .header__mark {
   padding: 8px;
   border-radius: 16px;
   transform: translateY(140%);
-  transition: transform 400ms var(--ease-out);
+  visibility: hidden;
+  transition: transform 400ms var(--ease-out), visibility 0s 400ms;
 }
 
 .dock.is-on {
   transform: none;
+  visibility: visible;
+  transition: transform 400ms var(--ease-out), visibility 0s;
 }
 
 .dock__call {
@@ -1558,4 +1569,9 @@ html:not(.js) .header__mark {
   .header .btn {
     padding: 10px 14px;
   }
+}
+
+/* Failsafe: if the app script never runs, the page is shown as printed (see Base.astro). */
+.no-app .loader {
+  display: none !important;
 }

@@ -67,6 +67,12 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
           history.scrollRestoration = 'manual';
         }
       } catch (e) {}
+      setTimeout(function () {
+        if (!window.__sgReady) {
+          root.classList.remove('js', 'intro');
+          root.classList.add('no-app');
+        }
+      }, 6000);
     </script>
 
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

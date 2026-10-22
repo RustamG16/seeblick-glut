@@ -3,8 +3,8 @@ import gsap from 'gsap';
 // The intro plays once per session. The night pane holds the Remotion wordmark, counts the
 // windows 00 → 08 as the page loads, then closes down onto window 00: the dark is handed
 // to the first window and the paper page is revealed around it.
-const MIN_MS = 2600;
-const MAX_MS = 4200;
+const MIN_MS = 2000;
+const MAX_MS = 3200;
 
 export function runLoader(): Promise<void> {
   const root = document.documentElement;

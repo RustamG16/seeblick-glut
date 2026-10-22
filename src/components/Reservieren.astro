@@ -7,13 +7,21 @@ const email = tour.events.cta.href.replace('mailto:', '');
 ---
 
 <section class="reserve on-night" id="reservieren" aria-labelledby="reserve-title">
-  <div class="reserve__view" aria-hidden="true">
-    <picture>
-      <source media="(max-width: 699px)" srcset={url(site.assets.seeblick.tall)} />
-      <img src={url(site.assets.seeblick.wide)} alt="" width="1600" height="893" loading="lazy" decoding="async" />
-    </picture>
-  </div>
-  <div class="wrap grid">
+  <div class="wrap grid reserve__grid">
+    <figure class="reserve__view">
+      <picture>
+        <source media="(max-width: 699px)" srcset={url(site.assets.seeblick.tall)} />
+        <img
+          src={url(site.assets.seeblick.wide)}
+          alt="Der Wörthersee zur blauen Stunde durch das Fensterglas, eine Kerze auf dem Sims"
+          width="1600"
+          height="893"
+          loading="lazy"
+          decoding="async"
+        />
+      </picture>
+      <figcaption class="reserve__cap t-meta"><span>09</span><span>— Nach dem Service</span></figcaption>
+    </figure>
     <div class="reserve__card glass glass--night" data-glass>
       <h2 class="t-d2" id="reserve-title">{practical.cta.label}</h2>
       <div class="reserve__rows">

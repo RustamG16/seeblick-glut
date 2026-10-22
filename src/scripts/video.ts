@@ -29,7 +29,6 @@ function play(v: HTMLVideoElement) {
 function syncButtons() {
   document.querySelectorAll<HTMLButtonElement>('[data-pause]').forEach((b) => {
     b.textContent = paused ? 'Abspielen' : 'Pause';
-    b.setAttribute('aria-pressed', String(paused));
   });
 }
 

@@ -11,6 +11,9 @@ initDishes();
 initChrome();
 initGlut();
 
+// Tells the head failsafe the app is alive; set only after every init above has run.
+(window as Window & { __sgReady?: boolean }).__sgReady = true;
+
 runLoader().then(() => {
   settleWordmark();
   initReveals();

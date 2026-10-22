@@ -1,8 +1,14 @@
-// Live "open now" line, computed from the hours in site.ts (Tue–Sun 12:00–14:30, 18:00–22:30, Europe/Vienna).
-const SERVICES: [number, number][] = [
-  [12 * 60, 14 * 60 + 30],
-  [18 * 60, 22 * 60 + 30],
-];
+import { site } from '../content/site';
+
+// Live "open now" line, computed from site.schema.openingHours ('Tu-Su 12:00-14:30', …), Europe/Vienna.
+const toMin = (t: string) => {
+  const [h, m] = t.split(':').map(Number);
+  return h * 60 + m;
+};
+const SERVICES: [number, number][] = site.schema.openingHours.map((s) => {
+  const [, from, to] = s.match(/(\d{2}:\d{2})-(\d{2}:\d{2})/)!;
+  return [toMin(from), toMin(to)];
+});
 const DAYS = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
 const hhmm = (m: number) => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
 
