@@ -30,6 +30,7 @@ export function runLoader(): Promise<void> {
     bar.style.transform = `scaleX(${progress.p})`;
   };
 
+  video.src = video.dataset.src ?? '';
   video.play().catch(() => loader.classList.add('is-fallback'));
   const fallbackTimer = setTimeout(() => {
     if (video.currentTime === 0) loader.classList.add('is-fallback');

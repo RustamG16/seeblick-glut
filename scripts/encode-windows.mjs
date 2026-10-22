@@ -32,7 +32,7 @@ const RATIO = { '3:2': [1080, 720, 720, 480], '3:4': [540, 720, 360, 480], '1:1'
 const videos = [
   { id: 'f00-glut', src: 'hero-sear.mp4', ss: 0, t: 8, crop: crop(1620, 1080, 0, 0), ratio: '3:2', flow: true },
   { id: 'f02-saal', src: 'room.mp4', ss: 0, t: 8, crop: crop(1620, 1080, 0, 0), ratio: '3:2', flow: true },
-  { id: 'f03-seelicht', src: 'gen/v01-seelicht.mp4', ss: 0, t: 5, crop: crop(588, 784, 420, 0), ratio: '3:4', flow: false },
+  { id: 'f03-seelicht', src: 'gen/v01-seelicht.mp4', ss: 0, t: 5, crop: crop(588, 784, 588, 0), ratio: '3:4', flow: false },
   { id: 'f05-haende', src: 'craft.mp4', ss: 0, t: 8, crop: crop(1080, 1080, 270, 0), ratio: '1:1', flow: true },
   { id: 'f06-haus', src: 'tour-leg3.mp4', ss: 3.2, t: 6.7, crop: crop(1620, 1080, 0, 0), ratio: '3:2', flow: true },
   { id: 'f07-terrasse', src: 'tour-leg2.mp4', ss: 4.5, t: 5, crop: crop(810, 1080, 405, 0), ratio: '3:4', flow: true },
@@ -84,7 +84,7 @@ for (const v of videos) {
   ff([...input, '-vf', `${c},scale=${mw}:${mh}:flags=lanczos`, ...enc, '-crf', '27', m]);
   const posterPng = join(OUT, `${v.id}.poster.tmp.png`);
   ff(['-i', d, '-frames:v', '1', posterPng]);
-  await sharp(posterPng).webp({ quality: 80 }).toFile(join(OUT, `${v.id}.webp`));
+  await sharp(posterPng).webp({ quality: v.id === 'f00-glut' ? 74 : 80 }).toFile(join(OUT, `${v.id}.webp`));
   rm(posterPng);
   report.push(`${v.id}  720 ${kb(d)} · 480 ${kb(m)} · poster ${kb(join(OUT, `${v.id}.webp`))}  crop x+w=${v.crop.x + v.crop.w}`);
 }
