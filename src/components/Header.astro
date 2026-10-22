@@ -1,0 +1,24 @@
+---
+import { site } from '../content/site';
+import { url } from '../lib/url';
+import Icon from './Icon.astro';
+import Status from './Status.astro';
+
+interface Props {
+  home?: boolean;
+}
+const { home = true } = Astro.props;
+const { contact } = site.practical;
+---
+
+<header class:list={['header', { 'is-solid': !home }]} data-header>
+  <div class="header__bar glass" data-glass>
+    <a class="header__mark" href={url('/')} aria-label="SEEBLICK & GLUT — Startseite">SEEBLICK <em>&amp;</em> GLUT</a>
+    <Status class="header__status t-meta" />
+    <a class="header__phone" href={contact.phoneHref}>
+      <Icon name="phone" />
+      <span>{contact.phone}</span>
+    </a>
+    <a class="btn" href={home ? '#reservieren' : `${url('/')}#reservieren`} data-magnetic>{site.hero.cta.label}</a>
+  </div>
+</header>

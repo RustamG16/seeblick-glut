@@ -1,0 +1,14 @@
+---
+import { site } from '../content/site';
+// Server-rendered fallback is the static hours; status.ts replaces it with the live state
+// computed from the same hours (Europe/Vienna). Nothing beyond site.ts is claimed.
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<span class:list={['status', className]} data-status aria-live="off">
+  <span class="status__dot" aria-hidden="true"></span>
+  <span data-status-text>{site.practical.hours.lines[0]}</span>
+</span>

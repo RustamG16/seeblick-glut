@@ -1,0 +1,21 @@
+---
+import { site } from '../content/site';
+import Fenster from './Fenster.astro';
+const { tour } = site;
+const body = Object.values(tour.legMeta).map((l) => l.sub).join(' ');
+---
+
+<section class="section saal" id="raum" aria-labelledby="saal-title">
+  <div class="wrap grid">
+    <div class="saal__text lede">
+      <h2 class="t-d1" id="saal-title">{tour.preBeat.a} {tour.preBeat.b}</h2>
+      <p class="t-body">{body}</p>
+    </div>
+    <div class="saal__a">
+      <Fenster win={site.windows.saal} sizes="(min-width: 900px) 58vw, 100vw" />
+    </div>
+    <div class="saal__b">
+      <Fenster win={site.windows.seelicht} sizes="(min-width: 900px) 30vw, 85vw" />
+    </div>
+  </div>
+</section>

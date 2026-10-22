@@ -1,0 +1,28 @@
+---
+import { site } from '../content/site';
+import { url } from '../lib/url';
+// The room before service: a night pane with the ignited wordmark (rendered in Remotion),
+// which closes down onto window 00 and hands the dark over to it.
+---
+
+<div class="loader" data-loader aria-hidden="true">
+  <div class="loader__stage">
+    <video
+      class="loader__mark"
+      muted
+      playsinline
+      preload="auto"
+      width="1600"
+      height="560"
+      data-loader-video
+      src={url(site.assets.intro)}
+    ></video>
+    <p class="loader__fallback t-wordmark-line">SEEBLICK <em>&amp;</em> GLUT</p>
+  </div>
+  <div class="loader__meta">
+    <span class="t-meta">Fenster</span>
+    <span class="loader__count t-meta" data-loader-count>00</span>
+    <span class="loader__bar"><span data-loader-bar></span></span>
+    <span class="t-meta">08</span>
+  </div>
+</div>

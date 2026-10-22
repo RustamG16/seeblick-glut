@@ -4,21 +4,21 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "assets:hero": "node scripts/extract-hero-frames.mjs",
-    "ingest": "node scripts/ingest.mjs",
-    "sync-media": "node scripts/sync-media.mjs",
-    "predev": "npm run sync-media",
-    "prebuild": "npm run sync-media",
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "encode": "node scripts/encode-windows.mjs",
+    "render:wordmark": "cd remotion && npx remotion render src/index.ts Wordmark out/wordmark.mp4 --codec=h264 --crf=20 && cp out/wordmark.mp4 ../public/media/wordmark-intro.mp4"
   },
   "dependencies": {
+    "@fontsource-variable/fraunces": "^5.3.0",
+    "@fontsource-variable/instrument-sans": "^5.3.0",
     "astro": "^5.7.0",
     "gsap": "^3.13.0",
-    "lenis": "^1.3.4"
+    "three": "^0.180.0"
   },
   "devDependencies": {
+    "@types/three": "^0.180.0",
     "ffmpeg-static": "^5.2.0",
     "sharp": "^0.34.1",
     "typescript": "^5.8.3"

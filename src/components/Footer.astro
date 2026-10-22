@@ -1,109 +1,17 @@
 ---
 import { site } from '../content/site';
-
-const { footer, name } = site;
+import { url } from '../lib/url';
+const { footer } = site;
 ---
 
-<footer class="footer">
-  <div class="footer__inner">
-    <div class="footer__brand">
-      <p class="footer__name">{name}</p>
-      <p class="footer__line">{footer.line}</p>
-    </div>
-    <div class="footer__meta">
-      <p class="footer__copy">{footer.copyright}</p>
-      <nav class="footer__nav" aria-label="Rechtliches">
-        <a href="/impressum">{footer.impressumLabel}</a>
-        <a href="/datenschutz">{footer.datenschutzLabel}</a>
-      </nav>
-    </div>
+<footer class="footer on-night">
+  <div class="wrap footer__row">
+    <span class="footer__mark">SEEBLICK <em>&amp;</em> GLUT</span>
+    <span class="t-meta">{footer.line}</span>
+    <span class="t-meta">{footer.copyright}</span>
+    <nav class="footer__links t-meta" aria-label="Rechtliches">
+      <a class="link" href={url('/impressum')}>{footer.impressumLabel}</a>
+      <a class="link" href={url('/datenschutz')}>{footer.datenschutzLabel}</a>
+    </nav>
   </div>
 </footer>
-
-<style>
-  .footer {
-    padding: clamp(56px, 8vw, 80px) clamp(24px, 5vw, 48px);
-    border-top: 1px solid color-mix(in srgb, var(--text) 10%, transparent);
-    background: color-mix(in srgb, var(--bg) 96%, white);
-  }
-
-  .footer__inner {
-    max-width: var(--content-max);
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: clamp(32px, 5vw, 64px);
-    align-items: end;
-  }
-
-  .footer__brand {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .footer__name {
-    font-family: var(--display);
-    font-size: clamp(20px, 2.5vw, 26px);
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--text);
-  }
-
-  .footer__line {
-    font-size: 14px;
-    color: var(--text-dim);
-    letter-spacing: 0.04em;
-  }
-
-  .footer__meta {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 16px;
-    text-align: right;
-  }
-
-  .footer__copy {
-    font-size: 12px;
-    color: var(--text-dim);
-    letter-spacing: 0.04em;
-  }
-
-  .footer__nav {
-    display: flex;
-    gap: 28px;
-  }
-
-  .footer__nav a {
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--text-dim);
-    border-bottom: 1px solid transparent;
-    padding: 10px 0 2px;
-    transition: border-color 0.2s ease, color 0.2s ease;
-  }
-
-  .footer__nav a:hover,
-  .footer__nav a:focus-visible {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
-  }
-
-  @media (max-width: 700px) {
-    .footer__inner {
-      grid-template-columns: 1fr;
-      align-items: flex-start;
-    }
-
-    .footer__meta {
-      align-items: flex-start;
-      text-align: left;
-      width: 100%;
-      padding-top: 8px;
-      border-top: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
-    }
-  }
-</style>

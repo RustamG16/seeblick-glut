@@ -1,20 +1,28 @@
 ---
 import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
-import Philosophy from '../components/Philosophy.astro';
-import Tour from '../components/Tour.astro';
-import Craft from '../components/Craft.astro';
-import Practical from '../components/Practical.astro';
+import Philosophie from '../components/Philosophie.astro';
+import Saal from '../components/Saal.astro';
+import Glut from '../components/Glut.astro';
+import Feste from '../components/Feste.astro';
+import Praktisches from '../components/Praktisches.astro';
+import Reservieren from '../components/Reservieren.astro';
 import Footer from '../components/Footer.astro';
+import Chrome from '../components/Chrome.astro';
 ---
 
-<Base>
+<Base intro>
+  <Header />
   <main id="main">
     <Hero />
-    <Philosophy />
-    <Tour />
-    <Craft />
-    <Practical />
+    <Philosophie />
+    <Saal />
+    <Glut />
+    <Feste />
+    <Praktisches />
+    <Reservieren />
   </main>
   <Footer />
+  <Chrome />
 </Base>

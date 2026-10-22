@@ -1,0 +1,17 @@
+---
+import { site } from '../content/site';
+import Fenster from './Fenster.astro';
+const { philosophy } = site;
+---
+
+<section class="section philo" id="philosophie" aria-labelledby="philo-title">
+  <div class="wrap grid">
+    <div class="philo__text lede">
+      <h2 class="t-d1" id="philo-title">{philosophy.headline}</h2>
+      <p class="t-body">{philosophy.body}</p>
+    </div>
+    <div class="philo__window">
+      <Fenster win={site.windows.feuer} sizes="(min-width: 900px) 30vw, 85vw" />
+    </div>
+  </div>
+</section>

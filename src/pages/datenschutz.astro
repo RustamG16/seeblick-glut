@@ -1,15 +1,18 @@
 ---
 import Base from '../layouts/Base.astro';
 import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { url } from '../lib/url';
 import { site } from '../content/site';
 
 const { datenschutz } = site.legal;
 ---
 
 <Base title={`${datenschutz.title} — ${site.name}`} description={`Datenschutzerklärung — ${site.name}`} preloadPoster={false}>
+  <Header home={false} />
   <main id="main">
     <article class="legal">
-      <a class="legal__back" href="/">← Zurück</a>
+      <a class="legal__back link t-meta" href={url('/')}>← Zurück</a>
       <h1>{datenschutz.title}</h1>
       {datenschutz.sections.map((section) => (
         <section>

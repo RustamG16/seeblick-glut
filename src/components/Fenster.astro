@@ -1,0 +1,75 @@
+---
+import type { Window } from '../content/site';
+import { url } from '../lib/url';
+
+// The one framed-media primitive: mat, hairline, night pane, caption with the window number.
+interface Props {
+  win: Window;
+  class?: string;
+  eager?: boolean;
+  reveal?: boolean;
+  sizes?: string;
+  /** Still windows carry their alt; video windows are aria-hidden and the caption carries meaning. */
+  decorative?: boolean;
+}
+
+const { win, class: className, eager = false, reveal = true, sizes, decorative } = Astro.props;
+const ratioClass = `fenster--${win.ratio.replace(':', 'x')}`;
+const isVideo = Boolean(win.video);
+const hideMedia = decorative ?? isVideo;
+const [w, h] = win.ratio.split(':').map(Number);
+---
+
+<figure
+  class:list={['fenster', ratioClass, className]}
+  data-fenster
+  data-num={win.num}
+  data-caption={win.caption}
+  data-reveal={reveal && !eager ? '' : undefined}
+>
+  <div class="fenster__mat">
+    <div class="fenster__pane" data-pane>
+      <img
+        class="fenster__media"
+        src={url(win.poster)}
+        alt={hideMedia ? '' : win.alt}
+        width={w * 100}
+        height={h * 100}
+        loading={eager ? 'eager' : 'lazy'}
+        decoding={eager ? 'sync' : 'async'}
+        fetchpriority={eager ? 'high' : undefined}
+        sizes={sizes}
+      />
+      {
+        isVideo && (
+          <video
+            muted
+            loop
+            playsinline
+            preload="none"
+            aria-hidden="true"
+            tabindex="-1"
+            data-video
+            data-eager={eager ? '' : undefined}
+            data-src-720={url(win.video!.d720)}
+            data-src-480={url(win.video!.d480)}
+          />
+        )
+      }
+      <slot />
+      <span class="fenster__glare" aria-hidden="true"></span>
+    </div>
+  </div>
+  <figcaption class="fenster__cap t-meta">
+    <span class="fenster__num">{win.num}</span>
+    <span>— {win.caption}</span>
+    {isVideo && <span class="sr-only">{win.alt}</span>}
+    {
+      isVideo && (
+        <button class="fenster__pause t-meta" type="button" data-pause aria-pressed="false">
+          Pause
+        </button>
+      )
+    }
+  </figcaption>
+</figure>

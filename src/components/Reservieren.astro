@@ -1,0 +1,27 @@
+---
+import { site } from '../content/site';
+import { url } from '../lib/url';
+import Icon from './Icon.astro';
+const { practical, tour } = site;
+const email = tour.events.cta.href.replace('mailto:', '');
+---
+
+<section class="reserve on-night" id="reservieren" aria-labelledby="reserve-title">
+  <div class="reserve__view" aria-hidden="true">
+    <picture>
+      <source media="(max-width: 699px)" srcset={url(site.assets.seeblick.tall)} />
+      <img src={url(site.assets.seeblick.wide)} alt="" width="1600" height="893" loading="lazy" decoding="async" />
+    </picture>
+  </div>
+  <div class="wrap grid">
+    <div class="reserve__card glass glass--night" data-glass>
+      <h2 class="t-d2" id="reserve-title">{practical.cta.label}</h2>
+      <div class="reserve__rows">
+        <a class="reserve__phone" href={practical.contact.phoneHref}>{practical.contact.phone}</a>
+        <a class="link" href={tour.events.cta.href}>{email}</a>
+      </div>
+      <p class="reserve__sub">{practical.cta.sub}</p>
+      <a class="btn btn--lg" href={practical.cta.href} data-magnetic><Icon name="phone" />{practical.cta.label}</a>
+    </div>
+  </div>
+</section>

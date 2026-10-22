@@ -1,0 +1,58 @@
+---
+import { site } from '../content/site';
+import { url } from '../lib/url';
+import Fenster from './Fenster.astro';
+const { craft, practical } = site;
+---
+
+<section class="section glut" id="glut" aria-labelledby="glut-title" data-glut>
+  <div class="wrap grid">
+    <div class="glut__hearth">
+      <Fenster win={site.windows.herd} decorative sizes="(min-width: 900px) 46vw, 100vw">
+        <div class="hearth" data-hearth aria-hidden="true"></div>
+        <span class="hearth__line" data-hearth-line aria-hidden="true"></span>
+      </Fenster>
+    </div>
+
+    <div class="glut__col" data-glut-col>
+      <div class="lede">
+        <h2 class="t-d1" id="glut-title" set:html={craft.headline} />
+        <p class="t-body">{craft.body}</p>
+      </div>
+
+      <ul class="dishes" data-dishes>
+        {
+          craft.dishes.map((dish, i) => (
+            <li class="dish" tabindex="0" data-dish={i}>
+              <img
+                class="dish__thumb"
+                src={url(site.dishStills[i].src)}
+                alt={site.dishStills[i].alt}
+                width="120"
+                height="120"
+                loading="lazy"
+                decoding="async"
+              />
+              <span>
+                <span class="dish__name t-d3">{dish.name}</span>
+                <span class="dish__note t-meta">{dish.note}</span>
+              </span>
+              <span class="dish__price t-price">{dish.price}</span>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="preview glass" data-preview aria-hidden="true">
+        <img class="preview__img" src={url(site.dishStills[0].src)} alt="" width="240" height="240" data-preview-img />
+        <span class="preview__cap t-meta" data-preview-cap>{craft.dishes[0].name}</span>
+      </div>
+
+      <p class="tasting t-pull">{practical.tastingMenu}</p>
+
+      <div class="glut__haende">
+        <Fenster win={site.windows.haende} sizes="(min-width: 900px) 36vw, 100vw" />
+      </div>
+    </div>
+  </div>
+</section>

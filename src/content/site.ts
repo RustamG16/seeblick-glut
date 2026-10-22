@@ -1,8 +1,13 @@
-export interface VideoAssets {
-  desktop: string;
-  mobile: string;
+export type Ratio = '3:2' | '3:4' | '1:1' | '4:5';
+
+/** One numbered window (Fenster). Media paths are root-relative; components add the deploy base. */
+export interface Window {
+  num: string;
+  caption: string;
+  ratio: Ratio;
+  alt: string;
   poster: string;
-  posterWebp: string;
+  video?: { d720: string; d480: string };
 }
 
 export interface Dish {
@@ -21,19 +26,11 @@ export const site = {
   name: 'SEEBLICK & GLUT',
   tagline: 'Feuer. See. Sonst nichts.',
 
-  tokens: {
-    bg: '#0A0908',
-    text: '#F5F0E8',
-    accent: '#E85D2F',
-    typeDisplay: 'Cormorant Garamond',
-    typeBody: 'Source Sans 3',
-  },
-
   meta: {
     title: 'SEEBLICK & GLUT — Wood-fire am Wörthersee',
     description:
       'Wood-fire restaurant on the Wörthersee shore, Klagenfurt. Carinthian dry-aged beef, lake char, reinterpreted Kasnudeln. Feuer. See. Sonst nichts.',
-    ogImage: '/assets/hero-sear/frame_0001.webp',
+    ogImage: '/media/og.jpg',
     url: 'https://seeblick-glut.at',
   },
 
@@ -55,25 +52,72 @@ export const site = {
     },
   },
 
-  assets: {
-    stillHero: '/media/still_hero.jpg',
-    stillHeroWebp: '/media/still_hero.webp',
-    heroVideo: {
-      desktop: '/media/hero-sear.mp4',
-      mobile: '/media/hero-sear-mobile.mp4',
-      poster: '/media/hero-sear-poster.jpg',
-      posterWebp: '/media/hero-sear-poster.webp',
-    } satisfies VideoAssets,
-    tourFrames: {
-      desktopPattern: '/assets/tour/frame-%05d.jpg',
-      mobilePattern: '/assets/tour-mobile/frame-%05d.jpg',
+  // The nine windows, 00–08, plates in a book (.olympus/06-build-plan.md, media map).
+  windows: {
+    glut: {
+      num: '00', caption: 'Die Glut, 19:40', ratio: '3:2',
+      alt: 'Dry-aged Rind über der Glut, dahinter der Wörthersee im Fensterglas',
+      poster: '/media/f00-glut.webp',
+      video: { d720: '/media/f00-glut.720.mp4', d480: '/media/f00-glut.480.mp4' },
     },
-    craftVideo: {
-      desktop: '/media/craft.mp4',
-      mobile: '/media/craft-mobile.mp4',
-      poster: '/media/craft-poster.jpg',
-      posterWebp: '/media/craft-poster.webp',
-    } satisfies VideoAssets,
+    feuer: {
+      num: '01', caption: 'Das Feuer', ratio: '3:4',
+      alt: 'Rindersteak auf dem Rost, Funken steigen auf',
+      poster: '/media/f01-feuer.webp',
+    },
+    saal: {
+      num: '02', caption: 'Der Saal, 20:30', ratio: '3:2',
+      alt: 'Der Saal bei Dämmerung — Holz, Kerzen, See im Fenster',
+      poster: '/media/f02-saal.webp',
+      video: { d720: '/media/f02-saal.720.mp4', d480: '/media/f02-saal.480.mp4' },
+    },
+    seelicht: {
+      num: '03', caption: 'Seelicht', ratio: '3:4',
+      alt: 'Abendlicht vom Wörthersee fällt durch die Fenster auf gedeckte Tische',
+      poster: '/media/f03-seelicht.webp',
+      video: { d720: '/media/f03-seelicht.720.mp4', d480: '/media/f03-seelicht.480.mp4' },
+    },
+    herd: {
+      num: '04', caption: 'Die Glut, geschürt', ratio: '4:5',
+      alt: 'Glut im Herd, Nahaufnahme',
+      poster: '/media/f04-glut-poster.webp',
+    },
+    haende: {
+      num: '05', caption: 'Die Hände', ratio: '1:1',
+      alt: 'Hände richten Reinanke auf Schiefer an',
+      poster: '/media/f05-haende.webp',
+      video: { d720: '/media/f05-haende.720.mp4', d480: '/media/f05-haende.480.mp4' },
+    },
+    haus: {
+      num: '06', caption: 'Das Haus', ratio: '3:2',
+      alt: 'Das Team von SEEBLICK & GLUT vor dem Kamin',
+      poster: '/media/f06-haus.webp',
+      video: { d720: '/media/f06-haus.720.mp4', d480: '/media/f06-haus.480.mp4' },
+    },
+    terrasse: {
+      num: '07', caption: 'Die Terrasse', ratio: '3:4',
+      alt: 'Musik auf der Seeterrasse',
+      poster: '/media/f07-terrasse.webp',
+      video: { d720: '/media/f07-terrasse.720.mp4', d480: '/media/f07-terrasse.480.mp4' },
+    },
+    ankunft: {
+      num: '08', caption: 'Die Ankunft', ratio: '3:2',
+      alt: 'Der Eingang am Abend, Fackeln, die Tür steht offen',
+      poster: '/media/f08-ankunft.webp',
+      video: { d720: '/media/f08-ankunft.720.mp4', d480: '/media/f08-ankunft.480.mp4' },
+    },
+  } satisfies Record<string, Window>,
+
+  // Dish stills for the hover / inline previews, in the order of craft.dishes.
+  dishStills: [
+    { src: '/media/d1-rind.webp', alt: 'Dry-aged Rinderfilet über Holzfeuer' },
+    { src: '/media/d2-reinanke.webp', alt: 'Reinanke vom Grill mit Zitrone und Dill' },
+    { src: '/media/d3-kasnudeln.webp', alt: 'Kasnudeln in brauner Butter mit Salbei' },
+  ],
+
+  assets: {
+    intro: '/media/wordmark-intro.mp4',
+    seeblick: { wide: '/media/seeblick-1600.webp', tall: '/media/seeblick-900.webp' },
   },
 
   hero: {
@@ -251,7 +295,7 @@ export function buildJsonLd() {
     name,
     description: meta.description,
     url: meta.url,
-    image: `${meta.url}${meta.ogImage}`,
+    image: new URL(meta.ogImage, meta.url).href,
     telephone: schema.telephone,
     priceRange: schema.priceRange,
     servesCuisine: schema.servesCuisine,

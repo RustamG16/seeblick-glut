@@ -1,0 +1,29 @@
+---
+import { site } from '../content/site';
+import Fenster from './Fenster.astro';
+import Icon from './Icon.astro';
+const { events } = site.tour;
+---
+
+<section class="section feste" id="feste" aria-labelledby="feste-title">
+  <div class="wrap grid">
+    <div class="feste__text lede">
+      <h2 class="t-d2" id="feste-title">{events.headline}</h2>
+      <p class="t-body">{events.body}</p>
+      <ul class="occasions t-meta" aria-label="Anlässe">
+        {events.marquee.map((o) => <li>{o}</li>)}
+      </ul>
+      <p>
+        <a class="link link--arrow" href={events.cta.href}>
+          {events.cta.label} <Icon name="arrow" />
+        </a>
+      </p>
+    </div>
+    <div class="feste__a">
+      <Fenster win={site.windows.haus} sizes="(min-width: 900px) 64vw, 100vw" />
+    </div>
+    <div class="feste__b">
+      <Fenster win={site.windows.terrasse} sizes="(min-width: 900px) 22vw, 85vw" />
+    </div>
+  </div>
+</section>

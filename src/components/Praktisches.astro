@@ -1,0 +1,45 @@
+---
+import { site } from '../content/site';
+import Fenster from './Fenster.astro';
+import Icon from './Icon.astro';
+const { practical } = site;
+---
+
+<section class="section prakt" id="practical" aria-labelledby="prakt-title">
+  <div class="wrap grid">
+    <div class="prakt__card">
+      <div class="prakt__light" aria-hidden="true"></div>
+      <h2 class="prakt__title t-d2" id="prakt-title">{practical.title}</h2>
+      <div class="tiles">
+        <div class="tile glass" data-glass>
+          <h3 class="tile__label t-meta"><Icon name="clock" />{practical.hours.label}</h3>
+          {practical.hours.lines.map((l) => <p>{l}</p>)}
+          <p class="tile__note">{practical.hours.note}</p>
+        </div>
+        <div class="tile glass" data-glass>
+          <h3 class="tile__label t-meta"><Icon name="pin" />{practical.address.label}</h3>
+          {practical.address.lines.map((l) => <p>{l}</p>)}
+          <div class="tile__action">
+            <a class="link" href={practical.address.mapUrl} target="_blank" rel="noopener">{practical.address.mapLabel}</a>
+          </div>
+        </div>
+        <div class="tile glass" data-glass>
+          <h3 class="tile__label t-meta"><Icon name="car" />{practical.parking.label}</h3>
+          {practical.parking.lines.map((l) => <p>{l}</p>)}
+          <p class="tile__note">{practical.parking.note}</p>
+        </div>
+        <div class="tile glass" data-glass>
+          <h3 class="tile__label t-meta"><Icon name="phone" />{practical.contact.label}</h3>
+          <p><a class="link" href={practical.contact.phoneHref}>{practical.contact.phone}</a></p>
+          <p class="tile__note">{practical.contact.note}</p>
+          <div class="tile__action">
+            <a class="btn" href={practical.cta.href} data-magnetic>{practical.cta.label}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="prakt__window">
+      <Fenster win={site.windows.ankunft} sizes="(min-width: 900px) 36vw, 100vw" />
+    </div>
+  </div>
+</section>

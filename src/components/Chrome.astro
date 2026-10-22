@@ -1,0 +1,20 @@
+---
+import { site } from '../content/site';
+import Icon from './Icon.astro';
+const nums = Object.values(site.windows).map((w) => w.num);
+const { practical } = site;
+---
+
+<!-- Window index (desktop): the plate numbers are the page's spine. -->
+<div class="rail glass t-meta" data-rail data-glass aria-hidden="true">
+  <span>Fenster</span>
+  <span class="rail__num" data-rail-num>00</span>
+  <span class="rail__ticks">{nums.map((n) => <i data-tick={n}></i>)}</span>
+  <span data-rail-cap></span>
+</div>
+
+<!-- Phone dock (mobile): the primary action, always one thumb away. -->
+<div class="dock glass" data-dock data-glass>
+  <a class="dock__call" href={practical.contact.phoneHref}><Icon name="phone" /> Anrufen</a>
+  <a class="btn" href="#reservieren">{practical.cta.label}</a>
+</div>
