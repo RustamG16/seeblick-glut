@@ -1,0 +1,53 @@
+{
+  "system": "olympus-designer-system1",
+  "target_project": "seeblick-glut",
+  "target_route": "/ (index.astro) — plus /impressum and /datenschutz inherit the new tokens",
+  "mode": "concept-and-implementation",
+  "trail": "abridged",
+  "phase": "prepare → design_system committed; build pending in a fresh local session (Opus 5.5)",
+  "gate_a": "approved-in-plan",
+  "gate_b": "approved-in-plan",
+  "gate_c": "pending",
+  "approved_direction": "Fensterplatz — paper-ground editorial page where every piece of media is a framed window into the dark, fire-lit room; one 3D hearth window; Atelier doctrine with three argued deviations",
+  "constraints": [
+    "Complete visual change from the current black full-bleed site",
+    "Video stays at 480p/720p and is always framed, never full-screen",
+    "Imagery from the Seeblick repo first; new media via Artlist only from the approved manifest",
+    "3D via three.js, bounded to one window with poster fallback",
+    "2026 award-site trends must be cited with live URLs, not asserted from memory",
+    "Plan written here (Fable); implementation in a fresh local session on Opus 5.5",
+    "No reservation engine exists — CTA is phone/email; nothing invented",
+    "All Veo-derived clips carry a watermark at x>1620px of the 1920 source; every crop ends at x<=1620"
+  ],
+  "references": [
+    "Supplied media in public/media and public/assets (direction evidence)",
+    "intake.md / brandspec.json / sitespec.json (client vocabulary, owned and refused colours)",
+    "Research basis in 06-build-plan.md (Awwwards hotel/restaurant category, 2026 SOTD/HM entries, trend reports)"
+  ],
+  "assets": [
+    "public/media/hero-sear.mp4 → F00 + F01",
+    "public/media/room.mp4 → F02",
+    "public/media/craft.mp4 → F05 + D2",
+    "public/media/tour-leg1.mp4 → F08",
+    "public/media/tour-leg2.mp4 → F07 (and F03 fallback)",
+    "public/media/tour-leg3.mp4 → F06",
+    "public/media/still_hero.jpg → OG image + D1",
+    "generated (pending approval): V01 Seelicht, S01 Kasnudeln, S02 Glut-Poster, optional M01 firewood GLB"
+  ],
+  "design_system": {
+    "product_md": true,
+    "design_md": true,
+    "design_json": true,
+    "committed_before_build": true,
+    "hero_type_vw": "fixed 140px at >=1280px (9.7vw at 1440); fixed steps 112 / 72 / 56 below — never fluid",
+    "doctrine_display_range": "convenium-design-atelier: a fixed step from the scale, never fluid; scale ceiling 72px extended two steps (90, 112, 140 at ratio 1.25) — deviation argued in 06-build-plan.md §Creative system",
+    "doctrine": "convenium-design-atelier"
+  },
+  "qa_passes": 0,
+  "finish_verdict": null,
+  "finish_score": null,
+  "phase_counts": { "intake": 1, "audit": 0, "direction": 1, "critique": 0, "prepare": 1, "design_system": 1, "build": 0, "qa": 0, "finish": 0, "measurement": 0, "handoff": 0 },
+  "planned_by": "Claude Fable 5.1 (cloud session, plan only)",
+  "build_by": "Claude Opus 5.5 (fresh local session) — see .olympus/KICKOFF.md",
+  "last_updated": "2026-10-22"
+}
