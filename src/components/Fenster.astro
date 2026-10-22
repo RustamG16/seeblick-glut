@@ -51,14 +51,15 @@ const [w, h] = win.ratio.split(':').map(Number);
             tabindex="-1"
             data-video
             data-eager={eager ? '' : undefined}
-            data-src-720={url(win.video!.d720)}
-            data-src-480={url(win.video!.d480)}
+            data-hd={url(win.video!.d720)}
+            data-sd={url(win.video!.d480)}
           />
         )
       }
       <slot />
       <span class="fenster__glare" aria-hidden="true"></span>
     </div>
+    <slot name="mat" />
   </div>
   <figcaption class="fenster__cap t-meta">
     <span class="fenster__num">{win.num}</span>

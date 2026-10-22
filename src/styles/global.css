@@ -458,6 +458,15 @@ html {
   transition: opacity 300ms var(--ease-out), transform 300ms var(--ease-out);
 }
 
+.header__bar > .status {
+  opacity: 0;
+  transition: opacity 300ms var(--ease-out);
+}
+
+.header.is-solid .header__bar > .status {
+  opacity: 1;
+}
+
 .header.is-solid .header__mark,
 html:not(.js) .header__mark {
   opacity: 1;
@@ -835,12 +844,23 @@ html:not(.js) .header__mark {
   position: relative;
 }
 
+.hearth {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.hearth canvas {
+  width: 100%;
+  height: 100%;
+}
+
 .hearth__line {
   /* Ember appearance 2: the hearth hairline fills as the column is read. */
   position: absolute;
-  left: -1px;
-  top: 0;
-  bottom: 0;
+  left: 5px;
+  top: var(--mat);
+  bottom: var(--mat);
   width: 2px;
   background: var(--ember);
   transform-origin: top;
@@ -963,6 +983,7 @@ html:not(.js) .header__mark {
     left: -284px;
     top: 0;
     width: 260px;
+    background: rgba(243, 235, 221, 0.72);
     padding: 10px;
     border-radius: 18px;
     pointer-events: none;
@@ -985,7 +1006,7 @@ html:not(.js) .header__mark {
   .preview__cap {
     display: block;
     padding: 10px 4px 2px;
-    color: var(--ink-2);
+    color: var(--ink);
   }
 }
 
@@ -1515,5 +1536,26 @@ html:not(.js) .header__mark {
   }
   .btn {
     transform: none;
+  }
+}
+
+/* Under the intro the wordmark waits in its light cut; settleWordmark() takes it to 400/144. */
+.intro .hero__title {
+  font-variation-settings: 'wght' 300, 'opsz' 72, 'SOFT' 0, 'WONK' 0;
+}
+
+@media (max-width: 599px) {
+  .header {
+    padding-inline: 12px;
+  }
+  .header__bar {
+    gap: 8px;
+    padding-inline: 12px 5px;
+  }
+  .header__mark {
+    font-size: 17px;
+  }
+  .header .btn {
+    padding: 10px 14px;
   }
 }

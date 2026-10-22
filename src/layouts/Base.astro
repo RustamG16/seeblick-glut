@@ -62,7 +62,10 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
       root.classList.add('js');
       try {
         var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (intro && !reduce && !sessionStorage.getItem('sg-intro')) root.classList.add('intro');
+        if (intro && !reduce && !sessionStorage.getItem('sg-intro')) {
+          root.classList.add('intro');
+          history.scrollRestoration = 'manual';
+        }
       } catch (e) {}
     </script>
 
