@@ -59,7 +59,7 @@ Finish review: **90 / 100, PASS WITH NOTES** (`10-finish-review.md`).
 
 Artlist total: **670 of 1,000 credits** (balance before: 7,490). Raw generations are kept in
 `assets-out/gen/`, Flow sources in `assets-out/src/` — both **local only** (git-ignored); the
-originals remain in git history before commit `fb3db08`'s successor.
+originals remain in git history before commit `a5117fe`.
 
 ## Known debt
 
