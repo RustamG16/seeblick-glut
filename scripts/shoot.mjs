@@ -61,7 +61,10 @@ for (const [name, width, height, mobile] of [
     await send('Runtime.evaluate', { expression: `scrollTo(0, ${y})` });
     await sleep(350);
   }
-  await send('Runtime.evaluate', { expression: 'scrollTo(0, 0)' });
+  const focus = process.env.FOCUS; // optional selector to frame instead of the top
+  await send('Runtime.evaluate', {
+    expression: focus ? `document.querySelector(${JSON.stringify(focus)}).scrollIntoView({ block: 'center' })` : 'scrollTo(0, 0)',
+  });
   await sleep(1200);
   const top = await send('Page.captureScreenshot', { format: 'jpeg', quality: 82 });
   writeFileSync(resolve(ROOT, `${prefix}-${name}-top.jpg`), Buffer.from(top.data, 'base64'));

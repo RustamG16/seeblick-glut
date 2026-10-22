@@ -4,7 +4,7 @@
   "target_route": "/ (index.astro) — plus /impressum and /datenschutz inherit the new tokens",
   "mode": "concept-and-implementation",
   "trail": "abridged",
-  "phase": "prepare → design_system committed; build pending in a fresh local session (Opus 5.5)",
+  "phase": "handoff — built, reviewed (90/100 PASS WITH NOTES), published to GitHub Pages; Gate C pending",
   "gate_a": "approved-in-plan",
   "gate_b": "approved-in-plan",
   "gate_c": "pending",
@@ -32,7 +32,7 @@
     "public/media/tour-leg2.mp4 → F07 (and F03 fallback)",
     "public/media/tour-leg3.mp4 → F06",
     "public/media/still_hero.jpg → OG image + D1",
-    "generated (pending approval): V01 Seelicht, S01 Kasnudeln, S02 Glut-Poster, optional M01 firewood GLB"
+    "generated 2026-10-22 (Artlist, 670 credits): V01 Seelicht (Kling v3 Std 720), S01 Kasnudeln, S02 Glut poster, S03 Seeblick (Nano Banana 2); M01 not generated"
   ],
   "design_system": {
     "product_md": true,
@@ -43,11 +43,33 @@
     "doctrine_display_range": "convenium-design-atelier: a fixed step from the scale, never fluid; scale ceiling 72px extended two steps (90, 112, 140 at ratio 1.25) — deviation argued in 06-build-plan.md §Creative system",
     "doctrine": "convenium-design-atelier"
   },
-  "qa_passes": 0,
-  "finish_verdict": null,
-  "finish_score": null,
-  "phase_counts": { "intake": 1, "audit": 0, "direction": 1, "critique": 0, "prepare": 1, "design_system": 1, "build": 0, "qa": 0, "finish": 0, "measurement": 0, "handoff": 0 },
+  "qa_passes": 2,
+  "finish_verdict": "PASS WITH NOTES",
+  "finish_score": 90,
+  "phase_counts": {
+    "intake": 1,
+    "audit": 0,
+    "direction": 1,
+    "critique": 0,
+    "prepare": 1,
+    "design_system": 1,
+    "build": 1,
+    "qa": 2,
+    "finish": 2,
+    "measurement": 1,
+    "handoff": 1
+  },
   "planned_by": "Claude Fable 5.1 (cloud session, plan only)",
-  "build_by": "Claude Opus 5.5 (fresh local session) — see .olympus/KICKOFF.md",
-  "last_updated": "2026-10-22"
+  "build_by": "Claude Opus 5.5 (local session, 2026-10-22)",
+  "last_updated": "2026-10-22",
+  "finish_score_history": [
+    83,
+    90
+  ],
+  "amendment": ".olympus/06a-amendment.md — glass, one-time intro, Remotion wordmark, kickers removed, GitHub Pages",
+  "deploy": {
+    "host": "GitHub Pages",
+    "url": "https://rustamg16.github.io/seeblick-glut/",
+    "workflow": ".github/workflows/pages.yml"
+  }
 }

@@ -9,6 +9,16 @@ const SERVICES: [number, number][] = site.schema.openingHours.map((s) => {
   const [, from, to] = s.match(/(\d{2}:\d{2})-(\d{2}:\d{2})/)!;
   return [toMin(from), toMin(to)];
 });
+// Open days from the same strings, e.g. 'Tu-Su' (schema.org day codes, Sunday = 0).
+const CODES = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+const OPEN = new Set<number>();
+for (const s of site.schema.openingHours) {
+  const [from, to = from] = s.split(' ')[0].split('-').map((c) => CODES.indexOf(c));
+  for (let d = from; ; d = (d + 1) % 7) {
+    OPEN.add(d);
+    if (d === to) break;
+  }
+}
 const DAYS = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
 const hhmm = (m: number) => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
 
@@ -27,7 +37,7 @@ function viennaNow() {
 
 export function statusLine(): { open: boolean; text: string } {
   const { day, minutes } = viennaNow();
-  const openDay = (d: number) => d !== 1; // Montag Ruhetag
+  const openDay = (d: number) => OPEN.has(d);
   if (openDay(day)) {
     for (const [from, to] of SERVICES) {
       if (minutes >= from && minutes < to) return { open: true, text: `Jetzt geöffnet · bis ${hhmm(to)}` };
