@@ -1,17 +1,43 @@
 ---
 import { site } from '../content/site';
 import { url } from '../lib/url';
-const { footer } = site;
+const { footer, practical, tour } = site;
+const home = url('/');
+const pages = [
+  ['Die Karte', '#karte'],
+  ['Philosophie', '#philosophie'],
+  ['Die Glut', '#glut'],
+  ['Der Raum', '#raum'],
+  ['Feste & Events', '#feste'],
+  ['Reservieren', '#reservieren'],
+];
 ---
 
-<footer class="footer on-night">
-  <div class="wrap footer__row">
-    <span class="footer__mark">SEEBLICK <em>&amp;</em> GLUT</span>
-    <span class="t-meta">{footer.line}</span>
-    <span class="t-meta">{footer.copyright}</span>
-    <nav class="footer__links t-meta" aria-label="Rechtliches">
-      <a class="link" href={url('/impressum')}>{footer.impressumLabel}</a>
-      <a class="link" href={url('/datenschutz')}>{footer.datenschutzLabel}</a>
-    </nav>
+<footer class="footer on-pine">
+  <div class="wrap">
+    <div class="footer__cols">
+      <nav aria-label="Seiten">
+        <p class="footer__label">Seiten</p>
+        <ul>{pages.map(([l, h]) => <li><a class="link" href={`${home}${h}`}>{l}</a></li>)}</ul>
+      </nav>
+      <div>
+        <p class="footer__label">{practical.contact.label}</p>
+        <p><a class="link" href={practical.contact.phoneHref}>{practical.contact.phone}</a></p>
+        <p><a class="link" href={tour.events.cta.href}>{tour.events.cta.href.replace('mailto:', '')}</a></p>
+      </div>
+      <div>
+        <p class="footer__label">{practical.address.label}</p>
+        <p>{practical.address.lines[0]}<br />{practical.address.lines[1]}</p>
+        <p>{practical.hours.lines[0]}<br />{practical.hours.lines[1]}</p>
+      </div>
+    </div>
+    <p class="footer__mark" aria-hidden="true">Seeblick <em>&amp;</em> Glut</p>
+    <div class="footer__base">
+      <span>{footer.copyright}</span>
+      <nav class="footer__legal" aria-label="Rechtliches">
+        <a class="link" href={url('/impressum')}>{footer.impressumLabel}</a>
+        <a class="link" href={url('/datenschutz')}>{footer.datenschutzLabel}</a>
+      </nav>
+    </div>
   </div>
 </footer>

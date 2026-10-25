@@ -1,92 +1,56 @@
-/* Tokens from DESIGN.md / design.json. Fixed type steps per breakpoint — never vw, never clamp(). */
+/* "Die Speisekarte am See" — four inks on cream (.olympus/06b-direction-speisekarte.md). */
 :root {
-  --paper: #f3ebdd;
-  --paper-2: #eae0ce;
-  --line: #d8cdbb;
-  --ink: #1a1511;
-  --ink-2: #5c5149;
-  --ink-3: #756a5f;
-  --night: #0c0a09;
-  --night-2: #161210;
-  --paper-dim: #c9bfae;
-  --ember: #e85d2f;
-  --ember-hover: #d5552b;
-  --lake: #2e5560;
+  --cream: #f3e7d3;
+  --cream-2: #eadbc2;
+  --ink: #241c17;
+  --ink-2: #5a4a3f;
+  --ember: #d8452b; /* display ≥ 28 px and fills only */
+  --ember-deep: #b23219; /* small red text, buttons */
+  --lake: #2d5d7b;
+  --lake-2: #24506b;
+  --pine: #2f4a3a;
+  --pine-2: #263d30;
+  --butter: #e9b949;
+  --night: #16110e;
 
-  --font-display: 'Fraunces Variable', Georgia, serif;
-  --font-text: 'Instrument Sans Variable', -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Playfair Display Variable', 'Playfair Display', Georgia, serif;
+  --font-text: 'Bitter Variable', Bitter, Georgia, serif;
 
-  --t-hero: 56px;
-  --t-d1: 40px;
-  --t-d2: 28px;
-  --t-d3: 22px;
-  --t-pull: 20px;
+  /* Fluid poster type is part of this direction. */
+  --t-mast: clamp(132px, 30vw, 420px);
+  --t-title: clamp(64px, 13vw, 184px);
+  --t-d2: clamp(36px, 5.6vw, 80px);
+  --t-d3: clamp(26px, 3vw, 40px);
+  --t-label: clamp(20px, 1.8vw, 26px);
   --t-body: 18px;
-  --t-label: 16px;
+  --t-small: 15px;
   --t-meta: 13px;
-  --t-price: 28px;
 
-  --s-1: 4px;
-  --s-2: 8px;
-  --s-3: 16px;
-  --s-4: 24px;
-  --s-5: 40px;
-  --s-6: 64px;
-  --s-7: 96px;
-  --s-8: 160px;
-
-  --section: 96px;
+  --frame: 8px;
   --gutter: 16px;
-  --margin: 24px;
-  --content: 1280px;
-  --mat: 12px;
-  --radius: 2px;
-  --radius-glass: 16px;
+  --margin: 16px;
+  --content: 1360px;
+  --section: 72px;
+  --rule: 1px solid var(--ink);
 
-  --micro: 160ms;
-  --move: 600ms;
-  --scene: 900ms;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-stamp: cubic-bezier(0.5, 0, 0.75, 0);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-
-  /* Glass — the restaurant's floor-to-ceiling pane, not decoration. */
-  --glass-paper: rgba(243, 235, 221, 0.58);
-  --glass-night: rgba(22, 18, 16, 0.42);
-  --glass-rim: rgba(255, 255, 255, 0.55);
-  --glass-rim-night: rgba(255, 255, 255, 0.16);
-  --glass-blur: blur(18px) saturate(150%);
-  --glass-depth: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 18px 48px -18px rgba(26, 21, 17, 0.32);
-  --glass-depth-night: 0 1px 0 rgba(255, 255, 255, 0.12) inset, 0 24px 60px -24px rgba(0, 0, 0, 0.7);
 }
 
-@media (min-width: 600px) {
+@media (min-width: 700px) {
   :root {
-    --t-hero: 72px;
-    --t-d2: 32px;
-    --t-d3: 24px;
-    --t-pull: 22px;
+    --frame: 12px;
     --gutter: 24px;
+    --margin: 32px;
+    --section: 104px;
   }
 }
 
-@media (min-width: 900px) {
+@media (min-width: 1100px) {
   :root {
-    --t-hero: 112px;
-    --t-d1: 56px;
-    --t-d2: 40px;
-    --t-d3: 28px;
-    --t-pull: 24px;
-    --t-body: 20px;
-    --section: 160px;
-    --margin: 48px;
-  }
-}
-
-@media (min-width: 1280px) {
-  :root {
-    --t-hero: 140px;
-    --t-d1: 72px;
-    --t-d2: 56px;
-    --t-pull: 28px;
+    --t-body: 19px;
+    --margin: 56px;
+    --section: 136px;
   }
 }

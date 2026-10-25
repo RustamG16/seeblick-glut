@@ -54,5 +54,5 @@ Real restaurant brief (`intake.md`, `brandspec.json`): wordmark `SEEBLICK & GLUT
 `Feuer. See. Sonst nichts.`, owned colours near-black `#0C0A09`, ember `#E85D2F`, warm
 parchment; refused: Mediterranean blue, red-check, gold foil. Voice: sparse, sensory, Carinthian
 direct; never "culinary journey", "passionate", "artisanal experience", "hidden gem",
-"farm-to-table". Direction: *Fensterplatz* under the Atelier doctrine (see `DESIGN.md`,
+"farm-to-table". Direction: *Die Speisekarte am See* (2026-10-22 redirect, `.olympus/06b-direction-speisekarte.md`; previously *Fensterplatz* under the Atelier doctrine, see `.olympus/DESIGN-fensterplatz.md`,
 `.olympus/06-build-plan.md`). Build path: code-led, one direction, no alternatives.

@@ -1,0 +1,23 @@
+---
+// A round printer's stamp: ring text on a path, a glyph in the middle. Rotates (motion.ts),
+// faster with scroll velocity; still under reduced motion. Decorative — the ring repeats copy.
+interface Props {
+  ring: string;
+  glyph?: string;
+  tone?: 'butter' | 'ember' | 'lake' | 'cream';
+  class?: string;
+}
+const { ring, glyph = '&', tone = 'butter', class: className } = Astro.props;
+const id = `ring-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<span class:list={['stamp', `stamp--${tone}`, className]} aria-hidden="true">
+  <svg viewBox="0 0 200 200" data-stamp>
+    <circle class="stamp__disc" cx="100" cy="100" r="99"></circle>
+    <circle class="stamp__line" cx="100" cy="100" r="90"></circle>
+    <circle class="stamp__line" cx="100" cy="100" r="57"></circle>
+    <defs><path id={id} d="M100,100 m-73,0 a73,73 0 1,1 146,0 a73,73 0 1,1 -146,0"></path></defs>
+    <text class="stamp__ring"><textPath href={`#${id}`} textLength="456" lengthAdjust="spacing">{ring}</textPath></text>
+  </svg>
+  <span class="stamp__glyph">{glyph}</span>
+</span>

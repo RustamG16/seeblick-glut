@@ -1,35 +1,44 @@
 ---
 import { site } from '../content/site';
+import { fit } from '../lib/fit';
 import { url } from '../lib/url';
 import Icon from './Icon.astro';
+import Stamp from './Stamp.astro';
 const { practical, tour } = site;
 const email = tour.events.cta.href.replace('mailto:', '');
 ---
 
-<section class="reserve on-night" id="reservieren" aria-labelledby="reserve-title">
-  <div class="wrap grid reserve__grid">
-    <figure class="reserve__view">
-      <picture>
-        <source media="(max-width: 699px)" srcset={url(site.assets.seeblick.tall)} />
-        <img
-          src={url(site.assets.seeblick.wide)}
-          alt="Der Wörthersee zur blauen Stunde durch das Fensterglas, eine Kerze auf dem Sims"
-          width="1600"
-          height="893"
-          loading="lazy"
-          decoding="async"
-        />
-      </picture>
-      <figcaption class="reserve__cap t-meta"><span>09</span><span>— Nach dem Service</span></figcaption>
-    </figure>
-    <div class="reserve__card glass glass--night" data-glass>
-      <h2 class="t-d2" id="reserve-title">{practical.cta.label}</h2>
-      <div class="reserve__rows">
+<section class="section reserve" id="reservieren" aria-labelledby="reserve-title">
+  <div class="wrap">
+    <div class="reserve__head">
+      <h2 class="title title--ember reserve__title" style={fit(practical.cta.label)} id="reserve-title" data-split>{practical.cta.label}</h2>
+      <Stamp ring={`TISCH RESERVIEREN · ${practical.contact.phone} · `} glyph="✦" tone="lake" class="reserve__stamp" />
+    </div>
+
+    <div class="reserve__grid">
+      <div class="reserve__text">
+        <p class="dropcap" data-in="rise">{practical.cta.sub}</p>
         <a class="reserve__phone" href={practical.contact.phoneHref}>{practical.contact.phone}</a>
-        <a class="link" href={tour.events.cta.href}>{email}</a>
+        <a class="link reserve__mail" href={tour.events.cta.href}>{email}</a>
+        <a class="btn btn--ember" href={practical.cta.href}><Icon name="phone" />{practical.cta.label}</a>
       </div>
-      <p class="reserve__sub">{practical.cta.sub}</p>
-      <a class="btn btn--lg" href={practical.cta.href} data-magnetic><Icon name="phone" />{practical.cta.label}</a>
+      <figure class="plate plate--view" data-in="plate">
+        <div class="plate__pane">
+          <picture>
+            <source media="(max-width: 699px)" srcset={url(site.assets.seeblick.tall)} />
+            <img
+              class="plate__media"
+              src={url(site.assets.seeblick.wide)}
+              alt="Der Wörthersee zur blauen Stunde durch das Fensterglas, eine Kerze auf dem Sims"
+              width="1600"
+              height="893"
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
+        </div>
+        <figcaption class="plate__cap"><span class="plate__num">09</span><span class="plate__title">Nach dem Service</span></figcaption>
+      </figure>
     </div>
   </div>
 </section>

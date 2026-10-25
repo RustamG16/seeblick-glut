@@ -1,165 +1,176 @@
 import React from 'react';
-import {
-  AbsoluteFill,
-  Easing,
-  interpolate,
-  interpolateColors,
-  random,
-  staticFile,
-  useCurrentFrame,
-  useVideoConfig,
-} from 'remotion';
+import { AbsoluteFill, Easing, interpolate, staticFile, useCurrentFrame } from 'remotion';
 
-// The wordmark "ignites": each letter arrives ember-hot and cools to paper,
-// the ampersand flickers like a flame, a hearth hairline draws, sparks rise.
-const PAPER = '#F3EBDD';
-const PAPER_DIM = '#C9BFAE';
-const EMBER = '#E85D2F';
-const HOT = '#FFB37A';
+// The menu card is printed: a red double frame draws, each word is stamped in ember with the
+// lake-blue plate a few pixels off register before it settles, the butter "&" stamp spins in,
+// and the motto is set in italic underneath. Same inks as the page (.olympus/06b).
+const CREAM = '#F3E7D3';
+const INK = '#241C17';
+const EMBER = '#D8452B';
+const EMBER_DEEP = '#B23219';
+const LAKE = '#2D5D7B';
+const BUTTER = '#E9B949';
 
 const fontFaces = `
-@font-face { font-family: 'Fraunces'; src: url(${staticFile('fraunces-latin-full-normal.woff2')}) format('woff2'); font-weight: 100 900; font-style: normal; }
-@font-face { font-family: 'Fraunces'; src: url(${staticFile('fraunces-latin-full-italic.woff2')}) format('woff2'); font-weight: 100 900; font-style: italic; }
-@font-face { font-family: 'Instrument Sans'; src: url(${staticFile('instrument-sans-latin-wght-normal.woff2')}) format('woff2'); font-weight: 400 700; }
+@font-face { font-family: 'Playfair'; src: url(${staticFile('playfair-display-latin-wght-normal.woff2')}) format('woff2'); font-weight: 400 900; font-style: normal; }
+@font-face { font-family: 'Playfair'; src: url(${staticFile('playfair-display-latin-wght-italic.woff2')}) format('woff2'); font-weight: 400 900; font-style: italic; }
+@font-face { font-family: 'Bitter'; src: url(${staticFile('bitter-latin-wght-normal.woff2')}) format('woff2'); font-weight: 100 900; }
 `;
 
-const ease = Easing.bezier(0.16, 1, 0.3, 1);
+const out = Easing.bezier(0.16, 1, 0.3, 1);
+const clamp = { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' } as const;
 
-const Letter: React.FC<{ ch: string; start: number; italic?: boolean }> = ({ ch, start, italic }) => {
-  const frame = useCurrentFrame();
-  const t = (from: number, to: number, a: number, b: number) =>
-    interpolate(frame, [start + a, start + b], [from, to], {
-      extrapolateLeft: 'clamp',
-      extrapolateRight: 'clamp',
-      easing: ease,
-    });
-  const opacity = t(0, 1, 0, 10);
-  const blur = t(10, 0, 0, 16);
-  const y = t(18, 0, 0, 18);
-  const wght = t(220, 400, 0, 26);
-  const opsz = t(72, 144, 0, 26);
-  const heat = t(1, 0, 4, 34);
-
-  // The ampersand never fully cools: it is the fire in the name.
-  const flicker = italic ? 0.82 + 0.18 * Math.sin(frame * 0.9 + random(`f${frame}`) * 2) : 1;
-  const color = italic
-    ? interpolateColors(heat, [0, 1], [EMBER, HOT])
-    : interpolateColors(heat, [0, 1], [PAPER, HOT]);
-  const glow = italic ? 28 * flicker : 36 * heat;
-
+/** A word pressed onto the card: drops from 1.18× with a hard landing, then the off-register plate settles. */
+const Stamp: React.FC<{ text: string; at: number }> = ({ text, at }) => {
+  const f = useCurrentFrame();
+  const scale = interpolate(f, [at, at + 6], [1.18, 1], { ...clamp, easing: Easing.in(Easing.quad) });
+  const opacity = interpolate(f, [at, at + 3], [0, 1], clamp);
+  const reg = interpolate(f, [at + 5, at + 20], [9, 0], { ...clamp, easing: out });
+  const rot = interpolate(f, [at, at + 6], [-2.5, 0], clamp);
+  const word: React.CSSProperties = { position: 'absolute', inset: 0, whiteSpace: 'pre' };
   return (
-    <span
-      style={{
-        display: 'inline-block',
-        opacity: opacity * (italic ? flicker : 1),
-        filter: `blur(${blur}px)`,
-        transform: `translateY(${y}px)`,
-        color,
-        fontStyle: italic ? 'italic' : 'normal',
-        fontVariationSettings: `'wght' ${wght}, 'opsz' ${opsz}, 'SOFT' 0, 'WONK' 0`,
-        textShadow: glow > 0.5 ? `0 0 ${glow}px rgba(232,93,47,${0.55 * (italic ? 1 : heat)})` : 'none',
-        fontSize: italic ? '0.62em' : '1em',
-        margin: italic ? '0 0.3em 0 0.24em' : 0,
-        whiteSpace: 'pre',
-      }}
-    >
-      {ch}
+    <span style={{ position: 'relative', display: 'inline-block', opacity, transform: `scale(${scale}) rotate(${rot}deg)` }}>
+      <span style={{ visibility: 'hidden', whiteSpace: 'pre' }}>{text}</span>
+      <span style={{ ...word, color: LAKE, opacity: reg > 0.4 ? 0.85 : 0, transform: `translate(${reg}px, ${reg * 0.6}px)` }}>{text}</span>
+      <span style={{ ...word, color: EMBER, mixBlendMode: 'multiply' }}>{text}</span>
     </span>
   );
 };
 
-const Sparks: React.FC = () => {
-  const frame = useCurrentFrame();
-  const { width } = useVideoConfig();
-  const sparks = new Array(26).fill(0).map((_, i) => {
-    const born = 38 + random(`b${i}`) * 34;
-    const life = 22 + random(`l${i}`) * 20;
-    const p = (frame - born) / life;
-    if (p < 0 || p > 1) return null;
-    const x = width * (0.2 + random(`x${i}`) * 0.6) + Math.sin(p * 6 + i) * 10;
-    const y = 400 - p * (90 + random(`h${i}`) * 120);
-    const size = 2 + random(`s${i}`) * 3;
-    return (
-      <div
-        key={i}
-        style={{
-          position: 'absolute',
-          left: x,
-          top: y,
-          width: size,
-          height: size,
-          borderRadius: '50%',
-          background: interpolateColors(p, [0, 0.5, 1], [HOT, EMBER, '#3A1A0C']),
-          opacity: 1 - p,
-          boxShadow: `0 0 ${size * 4}px ${EMBER}`,
-        }}
-      />
-    );
-  });
-  return <>{sparks}</>;
+const AmpStamp: React.FC<{ at: number }> = ({ at }) => {
+  const f = useCurrentFrame();
+  const scale = interpolate(f, [at, at + 7], [1.6, 1], { ...clamp, easing: Easing.in(Easing.quad) });
+  const opacity = interpolate(f, [at, at + 3], [0, 1], clamp);
+  const spin = interpolate(f, [at, at + 90], [-140, 0], { ...clamp, easing: out });
+  const ring = 'FEUER · SEE · SONST NICHTS · ';
+  return (
+    <div
+      style={{
+        position: 'relative',
+        width: 150,
+        height: 150,
+        margin: '0 30px',
+        opacity,
+        transform: `scale(${scale}) rotate(${spin}deg)`,
+        flex: 'none',
+        alignSelf: 'center',
+      }}
+    >
+      <svg viewBox="0 0 200 200" width="150" height="150" style={{ position: 'absolute', inset: 0 }}>
+        <circle cx="100" cy="100" r="98" fill={BUTTER} />
+        <circle cx="100" cy="100" r="90" fill="none" stroke={INK} strokeWidth="1.5" />
+        <circle cx="100" cy="100" r="58" fill="none" stroke={INK} strokeWidth="1.5" />
+        <defs>
+          <path id="ring" d="M100,100 m-74,0 a74,74 0 1,1 148,0 a74,74 0 1,1 -148,0" />
+        </defs>
+        <text fill={INK} style={{ fontFamily: 'Bitter', fontWeight: 700, fontSize: 15, letterSpacing: '0.16em' }}>
+          <textPath href="#ring" textLength="462" lengthAdjust="spacing">{ring}</textPath>
+        </text>
+        <text
+          x="100"
+          y="128"
+          textAnchor="middle"
+          fill={EMBER_DEEP}
+          style={{ fontFamily: 'Playfair', fontStyle: 'italic', fontWeight: 800, fontSize: 84 }}
+        >
+          &amp;
+        </text>
+      </svg>
+    </div>
+  );
 };
 
 export const Wordmark: React.FC = () => {
-  const frame = useCurrentFrame();
-  const line = interpolate(frame, [34, 64], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: ease });
-  const motto = interpolate(frame, [56, 76], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: ease });
-  const tracking = interpolate(frame, [56, 90], [0.5, 0.24], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: ease });
-
-  const word1 = 'SEEBLICK'.split('');
-  const word2 = 'GLUT'.split('');
+  const f = useCurrentFrame();
+  const frame = interpolate(f, [0, 16], [0, 1], { ...clamp, easing: out });
+  const motto = interpolate(f, [34, 50], [0, 1], { ...clamp, easing: out });
+  const tracking = interpolate(f, [34, 60], [0.42, 0.22], { ...clamp, easing: out });
+  const rule = interpolate(f, [30, 52], [0, 1], { ...clamp, easing: out });
+  // 1600 × 560 inside a 24 px margin: the double frame is drawn as two rects by dash offset.
+  const W = 1552;
+  const H = 512;
+  const per = 2 * (W + H);
 
   return (
-    <AbsoluteFill style={{ background: '#000', alignItems: 'center', justifyContent: 'center' }}>
+    <AbsoluteFill style={{ background: CREAM, alignItems: 'center', justifyContent: 'center' }}>
       <style>{fontFaces}</style>
+      <svg width="1600" height="560" style={{ position: 'absolute', inset: 0 }}>
+        {[0, 9].map((d) => (
+          <rect
+            key={d}
+            x={24 + d}
+            y={24 + d}
+            width={W - d * 2}
+            height={H - d * 2}
+            fill="none"
+            stroke={EMBER}
+            strokeWidth={d ? 1.5 : 3}
+            strokeDasharray={per}
+            strokeDashoffset={per * (1 - frame)}
+          />
+        ))}
+      </svg>
       <div
         style={{
-          fontFamily: 'Fraunces',
-          fontSize: 150,
+          fontFamily: 'Playfair',
+          fontWeight: 900,
+          fontSize: 140,
           lineHeight: 1,
-          letterSpacing: '-0.02em',
+          letterSpacing: '-0.01em',
           display: 'flex',
-          alignItems: 'baseline',
-          marginTop: -40,
+          alignItems: 'center',
+          marginTop: -56,
         }}
       >
-        {word1.map((c, i) => (
-          <Letter key={`a${i}`} ch={c} start={i * 2} />
-        ))}
-        <Letter ch="&" start={14} italic />
-        {word2.map((c, i) => (
-          <Letter key={`b${i}`} ch={c} start={18 + i * 2} />
-        ))}
+        <Stamp text="SEEBLICK" at={8} />
+        <AmpStamp at={18} />
+        <Stamp text="GLUT" at={24} />
       </div>
       <div
         style={{
           position: 'absolute',
-          top: 400,
+          top: 392,
           left: '50%',
-          width: 980,
-          height: 2,
-          marginLeft: -490,
-          background: `linear-gradient(90deg, transparent, ${EMBER} 18%, ${HOT} 50%, ${EMBER} 82%, transparent)`,
-          transform: `scaleX(${line})`,
-          boxShadow: `0 0 18px rgba(232,93,47,${0.6 * line})`,
+          width: 900,
+          marginLeft: -450,
+          height: 0,
+          borderTop: `1.5px solid ${INK}`,
+          transform: `scaleX(${rule})`,
         }}
       />
-      <Sparks />
       <div
         style={{
           position: 'absolute',
-          top: 440,
+          top: 414,
           width: '100%',
           textAlign: 'center',
-          fontFamily: 'Instrument Sans',
-          fontWeight: 500,
-          fontSize: 22,
+          fontFamily: 'Playfair',
+          fontStyle: 'italic',
+          fontWeight: 600,
+          fontSize: 40,
+          letterSpacing: `${tracking * 0.2}em`,
+          color: INK,
+          opacity: motto,
+        }}
+      >
+        Feuer. See. Sonst nichts.
+      </div>
+      <div
+        style={{
+          position: 'absolute',
+          top: 476,
+          width: '100%',
+          textAlign: 'center',
+          fontFamily: 'Bitter',
+          fontWeight: 600,
+          fontSize: 16,
           letterSpacing: `${tracking}em`,
-          color: PAPER_DIM,
+          color: EMBER_DEEP,
           opacity: motto,
           textTransform: 'uppercase',
         }}
       >
-        Feuer. See. Sonst nichts.
+        Klagenfurt am Wörthersee
       </div>
     </AbsoluteFill>
   );

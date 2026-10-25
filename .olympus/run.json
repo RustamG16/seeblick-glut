@@ -71,5 +71,14 @@
     "host": "GitHub Pages",
     "url": "https://rustamg16.github.io/seeblick-glut/",
     "workflow": ".github/workflows/pages.yml"
+  },
+  "direction": "speisekarte",
+  "redirect": {
+    "date": "2026-10-26",
+    "reference": "Da Maria",
+    "doc": "06b-direction-speisekarte.md",
+    "artlistSpent": 930,
+    "lcpSlow4g": 1736,
+    "cls": 0
   }
 }

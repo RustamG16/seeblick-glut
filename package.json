@@ -11,8 +11,8 @@
     "render:wordmark": "cd remotion && npx remotion render src/index.ts Wordmark out/wordmark.mp4 --codec=h264 --crf=20 && cp out/wordmark.mp4 ../public/media/wordmark-intro.mp4"
   },
   "dependencies": {
-    "@fontsource-variable/fraunces": "^5.3.0",
-    "@fontsource-variable/instrument-sans": "^5.3.0",
+    "@fontsource-variable/bitter": "^5.3.0",
+    "@fontsource-variable/playfair-display": "^5.3.0",
     "astro": "^5.7.0",
     "gsap": "^3.13.0",
     "three": "^0.180.0"

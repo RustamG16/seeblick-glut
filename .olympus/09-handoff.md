@@ -76,3 +76,19 @@ originals remain in git history before commit `a5117fe`.
 ## How success is measured
 
 `08-metrics.md` — no analytics installed; owner-side tallies (Fri/Sat booked by 19:00, FAQ calls during service), plus optional privacy-friendly events if the client opts in.
+
+## 2026-10-26 — Redirect: "Die Speisekarte am See"
+
+The client rejected Fensterplatz on mobile and on palette/vibe, reviewed four references
+(`research/`) and chose Da Maria. Design: `06b-direction-speisekarte.md`, tokens in `DESIGN.md`.
+
+- New: Karte section (menu with dotted leaders + engravings, Tagesmenü box, reservation column),
+  red double page frame, running masthead marquee, rotating stamps, lake occasions marquee,
+  pine Glut section and footer, butter mobile dock, Remotion intro re-cut on cream.
+- Removed: glass material, dish hover preview, window rail (`glass.ts`, `dishes.ts`).
+- Kept: video injection (`video.ts`), live status, three.js hearth + stoke scrub, intro gate.
+- Engravings: 8 pen illustrations, Artlist Nano Banana 2 (2 sheets, 180 credits → total spend
+  930 / 1,000), cut by `scripts/engravings.mjs` into `public/media/e-*.webp` (516 KB).
+- First-view JS 8.8 KB raw (GSAP now lazy with three.js). Slow-4G: LCP 1.74 s first visit,
+  1.20 s repeat, CLS 0 (`scripts/measure.mjs`). Screens: `screenshots/sk3/` (`SLICES=1 shoot.mjs`).
+- Not done: independent critic pass on the new direction (author QA only this round).

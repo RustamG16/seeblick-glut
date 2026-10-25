@@ -1,24 +1,35 @@
 ---
 import { site } from '../content/site';
 import Fenster from './Fenster.astro';
+import Stamp from './Stamp.astro';
 import Status from './Status.astro';
+import Icon from './Icon.astro';
+const { practical } = site;
 ---
 
-<section class="hero" aria-labelledby="hero-title">
-  <div class="wrap grid hero__grid">
-    <h1 class="hero__title t-wordmark" id="hero-title" data-wordmark aria-label={site.name}>
-      <span aria-hidden="true">{site.hero.lines[0]}</span>
-      <span aria-hidden="true"><em>{site.hero.lines[1]}</em></span>
-      <span aria-hidden="true">{site.hero.lines[2]}</span>
-    </h1>
-    <div class="hero__aside">
-      <p class="t-pull">{site.tagline}</p>
-      <div class="hero__chip t-meta">
-        <Status />
-      </div>
+<section class="mast" aria-labelledby="mast-title">
+  <div class="mast__meta wrap">
+    <span>{site.footer.line}</span>
+    <Status />
+  </div>
+
+  <h1 class="sr-only" id="mast-title">{site.name} — {site.tagline}</h1>
+  <div class="marquee marquee--mast" data-marquee data-speed="0.6" aria-hidden="true">
+    <div class="marquee__track">
+      <span class="marquee__item">Seeblick</span><span class="marquee__star">✦</span>
+      <span class="marquee__item">Glut</span><span class="marquee__star">✦</span>
     </div>
-    <div class="hero__window">
-      <Fenster win={site.windows.glut} eager sizes="(min-width: 900px) 58vw, 100vw" />
+  </div>
+
+  <div class="wrap mast__body">
+    <p class="mast__tagline" data-in="rise">{site.tagline}</p>
+    <div class="mast__plate">
+      <Fenster win={site.windows.glut} eager class="plate--hero" sizes="(min-width: 1100px) 1240px, 100vw" />
+      <Stamp ring="FEUER · SEE · SONST NICHTS · " class="mast__stamp" />
+    </div>
+    <div class="mast__actions">
+      <a class="btn btn--ember" href={practical.contact.phoneHref}><Icon name="phone" />{site.hero.cta.label}</a>
+      <a class="btn" href="#karte">Die Karte</a>
     </div>
   </div>
 </section>

@@ -2,72 +2,63 @@
 import type { Window } from '../content/site';
 import { url } from '../lib/url';
 
-// The one framed-media primitive: mat, hairline, night pane, caption with the window number.
+// The one photo primitive: a plate on the menu card — 1 px ink rule, the picture, and an
+// ink caption box with the plate number. Video plates get their source on approach (video.ts).
 interface Props {
   win: Window;
   class?: string;
   eager?: boolean;
-  reveal?: boolean;
   sizes?: string;
-  /** Still windows carry their alt; video windows are aria-hidden and the caption carries meaning. */
+  /** Still plates carry their alt; video plates are aria-hidden and the caption carries meaning. */
   decorative?: boolean;
 }
 
-const { win, class: className, eager = false, reveal = true, sizes, decorative } = Astro.props;
-const ratioClass = `fenster--${win.ratio.replace(':', 'x')}`;
+const { win, class: className, eager = false, sizes, decorative } = Astro.props;
+const ratioClass = `plate--${win.ratio.replace(':', 'x')}`;
 const isVideo = Boolean(win.video);
 const hideMedia = decorative ?? isVideo;
 const [w, h] = win.ratio.split(':').map(Number);
 ---
 
-<figure
-  class:list={['fenster', ratioClass, className]}
-  data-fenster
-  data-num={win.num}
-  data-caption={win.caption}
-  data-reveal={reveal && !eager ? '' : undefined}
->
-  <div class="fenster__mat">
-    <div class="fenster__pane" data-pane>
-      <img
-        class="fenster__media"
-        src={url(win.poster)}
-        alt={hideMedia ? '' : win.alt}
-        width={w * 100}
-        height={h * 100}
-        loading={eager ? 'eager' : 'lazy'}
-        decoding={eager ? 'sync' : 'async'}
-        fetchpriority={eager ? 'high' : undefined}
-        sizes={sizes}
-      />
-      {
-        isVideo && (
-          <video
-            muted
-            loop
-            playsinline
-            preload="none"
-            aria-hidden="true"
-            tabindex="-1"
-            data-video
-            data-eager={eager ? '' : undefined}
-            data-hd={url(win.video!.d720)}
-            data-sd={url(win.video!.d480)}
-          />
-        )
-      }
-      <slot />
-      <span class="fenster__glare" aria-hidden="true"></span>
-    </div>
-    <slot name="mat" />
+<figure class:list={['plate', ratioClass, className]} data-in={eager ? undefined : 'plate'}>
+  <div class="plate__pane">
+    <img
+      class="plate__media"
+      src={url(win.poster)}
+      alt={hideMedia ? '' : win.alt}
+      width={w * 100}
+      height={h * 100}
+      loading={eager ? 'eager' : 'lazy'}
+      decoding={eager ? 'sync' : 'async'}
+      fetchpriority={eager ? 'high' : undefined}
+      sizes={sizes}
+    />
+    {
+      isVideo && (
+        <video
+          muted
+          loop
+          playsinline
+          preload="none"
+          aria-hidden="true"
+          tabindex="-1"
+          data-video
+          data-eager={eager ? '' : undefined}
+          data-hd={url(win.video!.d720)}
+          data-sd={url(win.video!.d480)}
+        />
+      )
+    }
+    <slot />
   </div>
-  <figcaption class="fenster__cap t-meta">
-    <span class="fenster__num">{win.num}</span>
-    <span>— {win.caption}</span>
+  <slot name="mat" />
+  <figcaption class="plate__cap">
+    <span class="plate__num">{win.num}</span>
+    <span class="plate__title">{win.caption}</span>
     {isVideo && <span class="sr-only">{win.alt}</span>}
     {
       isVideo && (
-        <button class="fenster__pause t-meta" type="button" data-pause>
+        <button class="plate__pause" type="button" data-pause>
           Pause
         </button>
       )

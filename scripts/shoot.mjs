@@ -55,15 +55,29 @@ for (const [name, width, height, mobile] of [
   await send('Emulation.setDeviceMetricsOverride', { width, height, deviceScaleFactor: 1, mobile });
   await send('Page.navigate', { url });
   await sleep(wait);
-  // Walk the page so lazy media and reveals trigger, then return to the top.
+  // Walk the page so lazy media and reveals trigger, then return to the top (skip with TOPONLY=1).
+  if (process.env.TOPONLY) {
+    const shot = await send('Page.captureScreenshot', { format: 'jpeg', quality: 78 });
+    writeFileSync(resolve(ROOT, `${prefix}-${name}.jpg`), Buffer.from(shot.data, 'base64'));
+    console.log(`${prefix}-${name} done`);
+    continue;
+  }
   const { result } = await send('Runtime.evaluate', { expression: 'document.documentElement.scrollHeight', returnByValue: true });
+  let n = 0;
   for (let y = 0; y < result.value; y += height * 0.8) {
-    await send('Runtime.evaluate', { expression: `scrollTo(0, ${y})` });
-    await sleep(350);
+    await send('Runtime.evaluate', { expression: `scrollTo({ top: ${y}, behavior: 'instant' })` });
+    await sleep(process.env.SLICES ? 1400 : 350);
+    // SLICES=1 keeps every viewport on the walk (prefix-<w>-s00.jpg …), for reading long pages.
+    if (process.env.SLICES) {
+      const s = await send('Page.captureScreenshot', { format: 'jpeg', quality: 72 });
+      writeFileSync(resolve(ROOT, `${prefix}-${name}-s${String(n++).padStart(2, '0')}.jpg`), Buffer.from(s.data, 'base64'));
+    }
   }
   const focus = process.env.FOCUS; // optional selector to frame instead of the top
   await send('Runtime.evaluate', {
-    expression: focus ? `document.querySelector(${JSON.stringify(focus)}).scrollIntoView({ block: 'center' })` : 'scrollTo(0, 0)',
+    expression: focus
+      ? `document.querySelector(${JSON.stringify(focus)}).scrollIntoView({ block: 'center', behavior: 'instant' })`
+      : `scrollTo({ top: 0, behavior: 'instant' })`,
   });
   await sleep(1200);
   const top = await send('Page.captureScreenshot', { format: 'jpeg', quality: 82 });

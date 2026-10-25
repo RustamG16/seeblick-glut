@@ -117,6 +117,16 @@ export const site = {
 
   assets: {
     intro: '/media/wordmark-intro.mp4',
+    // Pen engravings for the menu card (Artlist, Nano Banana 2; cut by scripts/engravings.mjs).
+    // Dishes follow the order of craft.dishes.
+    engravings: {
+      dishes: ['/media/e-rind.webp', '/media/e-reinanke.webp', '/media/e-kasnudeln.webp'],
+      telefon: '/media/e-telefon.webp',
+      holz: '/media/e-holz.webp',
+      see: '/media/e-see.webp',
+      feste: '/media/e-feste.webp',
+      kerze: '/media/e-kerze.webp',
+    },
     seeblick: { wide: '/media/seeblick-1600.webp', tall: '/media/seeblick-900.webp' },
   },
 

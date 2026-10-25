@@ -1,8 +1,8 @@
 ---
 import { site } from '../content/site';
 import { url } from '../lib/url';
-// The room before service: a night pane with the ignited wordmark (rendered in Remotion),
-// which closes down onto window 00 and hands the dark over to it.
+// The intro is the card being printed: the Remotion wordmark (cream, red, butter stamp) plays
+// once per session, then the card lifts off the page. Skipped for reduced motion / repeat visits.
 ---
 
 <div class="loader" data-loader aria-hidden="true">
@@ -17,12 +17,7 @@ import { url } from '../lib/url';
       data-loader-video
       data-src={url(site.assets.intro)}
     ></video>
-    <p class="loader__fallback t-wordmark-line">SEEBLICK <em>&amp;</em> GLUT</p>
+    <p class="loader__fallback">Seeblick <em>&amp;</em> Glut</p>
   </div>
-  <div class="loader__meta">
-    <span class="t-meta">Fenster</span>
-    <span class="loader__count t-meta" data-loader-count>00</span>
-    <span class="loader__bar"><span data-loader-bar></span></span>
-    <span class="t-meta">08</span>
-  </div>
+  <span class="loader__bar"><span data-loader-bar></span></span>
 </div>

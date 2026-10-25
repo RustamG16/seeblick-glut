@@ -1,24 +1,19 @@
 ---
 import { site } from '../content/site';
 import { url } from '../lib/url';
-import Icon from './Icon.astro';
-import Status from './Status.astro';
 
+// Menu-card masthead row: round "Karte" badge, boxed name, oval reservation button.
 interface Props {
   home?: boolean;
 }
 const { home = true } = Astro.props;
-const { contact } = site.practical;
+const to = (hash: string) => (home ? hash : `${url('/')}${hash}`);
 ---
 
-<header class:list={['header', { 'is-solid': !home }]} data-header>
-  <div class="header__bar glass" data-glass>
-    <a class="header__mark" href={url('/')} aria-label="SEEBLICK & GLUT — Startseite">SEEBLICK <em>&amp;</em> GLUT</a>
-    <Status class="header__status t-meta" />
-    <a class="header__phone" href={contact.phoneHref}>
-      <Icon name="phone" />
-      <span>{contact.phone}</span>
-    </a>
-    <a class="btn" href={home ? '#reservieren' : `${url('/')}#reservieren`} data-magnetic>{site.hero.cta.label}</a>
-  </div>
+<header class="header" data-header>
+  <a class="header__badge" href={to('#karte')}>Karte</a>
+  <a class="header__logo" href={url('/')} aria-label={`${site.name} — Startseite`}>
+    <span>Seeblick</span><em>&amp;</em><span>Glut</span>
+  </a>
+  <a class="header__cta btn btn--oval" href={to('#reservieren')}>Reservieren</a>
 </header>

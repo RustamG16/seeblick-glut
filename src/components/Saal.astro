@@ -1,21 +1,27 @@
 ---
 import { site } from '../content/site';
+import { fit } from '../lib/fit';
 import Fenster from './Fenster.astro';
-const { tour } = site;
+import Engraving from './Engraving.astro';
+const { tour, assets } = site;
 const body = Object.values(tour.legMeta).map((l) => l.sub).join(' ');
 ---
 
-<section class="section saal" id="raum" aria-labelledby="saal-title">
-  <div class="wrap grid">
-    <div class="saal__text lede">
-      <h2 class="t-d1" id="saal-title">{tour.preBeat.a} {tour.preBeat.b}</h2>
-      <p class="t-body">{body}</p>
-    </div>
-    <div class="saal__a">
-      <Fenster win={site.windows.saal} sizes="(min-width: 900px) 58vw, 100vw" />
-    </div>
-    <div class="saal__b">
-      <Fenster win={site.windows.seelicht} sizes="(min-width: 900px) 30vw, 85vw" />
+<section class="section raum" id="raum" aria-labelledby="raum-title">
+  <div class="wrap">
+    <h2 class="title title--ember" style={fit(tour.kicker)} id="raum-title" data-split>{tour.kicker}</h2>
+    <div class="raum__grid">
+      <div class="raum__a">
+        <Fenster win={site.windows.saal} sizes="(min-width: 1100px) 820px, 100vw" />
+      </div>
+      <div class="raum__text">
+        <p class="raum__beat" data-in="rise">{tour.preBeat.a}<br /><em>{tour.preBeat.b}</em></p>
+        <p class="dropcap" data-in="rise">{body}</p>
+        <Engraving src={assets.engravings.kerze} class="raum__engr" />
+      </div>
+      <div class="raum__b">
+        <Fenster win={site.windows.seelicht} sizes="(min-width: 1100px) 440px, 100vw" />
+      </div>
     </div>
   </div>
 </section>

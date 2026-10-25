@@ -1,45 +1,45 @@
 ---
 import { site } from '../content/site';
+import { fit } from '../lib/fit';
 import Fenster from './Fenster.astro';
+import Engraving from './Engraving.astro';
 import Icon from './Icon.astro';
-const { practical } = site;
+const { practical, assets } = site;
+const { hours, address, parking, contact } = practical;
 ---
 
-<section class="section prakt" id="practical" aria-labelledby="prakt-title">
-  <div class="wrap grid">
-    <div class="prakt__card">
-      <div class="prakt__light" aria-hidden="true"></div>
-      <h2 class="prakt__title t-d2" id="prakt-title">{practical.title}</h2>
-      <div class="tiles">
-        <div class="tile glass" data-glass>
-          <h3 class="tile__label t-meta"><Icon name="clock" />{practical.hours.label}</h3>
-          {practical.hours.lines.map((l) => <p>{l}</p>)}
-          <p class="tile__note">{practical.hours.note}</p>
-        </div>
-        <div class="tile glass" data-glass>
-          <h3 class="tile__label t-meta"><Icon name="pin" />{practical.address.label}</h3>
-          {practical.address.lines.map((l) => <p>{l}</p>)}
-          <div class="tile__action">
-            <a class="link" href={practical.address.mapUrl} target="_blank" rel="noopener">{practical.address.mapLabel}</a>
-          </div>
-        </div>
-        <div class="tile glass" data-glass>
-          <h3 class="tile__label t-meta"><Icon name="car" />{practical.parking.label}</h3>
-          {practical.parking.lines.map((l) => <p>{l}</p>)}
-          <p class="tile__note">{practical.parking.note}</p>
-        </div>
-        <div class="tile glass" data-glass>
-          <h3 class="tile__label t-meta"><Icon name="phone" />{practical.contact.label}</h3>
-          <p><a class="link" href={practical.contact.phoneHref}>{practical.contact.phone}</a></p>
-          <p class="tile__note">{practical.contact.note}</p>
-          <div class="tile__action">
-            <a class="btn" href={practical.cta.href} data-magnetic>{practical.cta.label}</a>
-          </div>
-        </div>
+<section class="section besuch" id="practical" aria-labelledby="besuch-title">
+  <div class="wrap">
+    <div class="besuch__head">
+      <h2 class="title title--lake" style={fit(practical.title)} id="besuch-title" data-split>{practical.title}</h2>
+      <Engraving src={assets.engravings.see} class="besuch__engr" />
+    </div>
+
+    <div class="cols">
+      <div class="col" data-in="rise">
+        <p class="col__label"><Icon name="clock" />{hours.label}</p>
+        <p>{hours.lines[0]}<br />{hours.lines[1]}</p>
+        <p class="col__note">{hours.note}</p>
+      </div>
+      <div class="col" data-in="rise">
+        <p class="col__label"><Icon name="pin" />{address.label}</p>
+        <p>{address.lines[0]}<br />{address.lines[1]}</p>
+        <a class="link" href={address.mapUrl} rel="noopener" target="_blank">{address.mapLabel}</a>
+      </div>
+      <div class="col" data-in="rise">
+        <p class="col__label"><Icon name="car" />{parking.label}</p>
+        <p>{parking.lines[0]}</p>
+        <p class="col__note">{parking.note}</p>
+      </div>
+      <div class="col" data-in="rise">
+        <p class="col__label"><Icon name="phone" />{contact.label}</p>
+        <a class="col__phone" href={contact.phoneHref}>{contact.phone}</a>
+        <p class="col__note">{contact.note}</p>
       </div>
     </div>
-    <div class="prakt__window">
-      <Fenster win={site.windows.ankunft} sizes="(min-width: 900px) 36vw, 100vw" />
+
+    <div class="besuch__plate">
+      <Fenster win={site.windows.ankunft} sizes="(min-width: 1100px) 1240px, 100vw" />
     </div>
   </div>
 </section>

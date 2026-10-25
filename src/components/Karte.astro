@@ -1,0 +1,66 @@
+---
+import { site } from '../content/site';
+import { fit } from '../lib/fit';
+import Engraving from './Engraving.astro';
+import Icon from './Icon.astro';
+const { craft, practical, assets } = site;
+const [menuName, menuPrice] = practical.tastingMenu.split(' — ');
+---
+
+<section class="section karte" id="karte" aria-labelledby="karte-title">
+  <div class="wrap">
+    <h2 class="title title--ember" style={fit('Die Karte')} id="karte-title" data-split>Die Karte</h2>
+
+    <div class="karte__grid">
+      <div class="karte__menu">
+        <p class="dropcap karte__intro" data-in="rise">{craft.body}</p>
+
+        <ol class="menu" aria-label="Aus der Karte">
+          {
+            craft.dishes.map((d, i) => (
+              <li class="menu__row" data-in="rise">
+                <Engraving src={assets.engravings.dishes[i]} class="menu__engr" />
+                <div class="menu__text">
+                  <p class="menu__line">
+                    <span class="menu__name">{d.name}</span>
+                    <span class="menu__dots" aria-hidden="true" />
+                    <span class="menu__price">{d.price}</span>
+                  </p>
+                  <p class="menu__note">{d.note}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+
+        <p class="box box--ember menu__tasting" data-in="wipe">
+          <span class="box__label">{menuName}</span>
+          <span class="box__rule" aria-hidden="true" />
+          <span class="menu__tasting-price">{menuPrice}</span>
+        </p>
+        <p class="karte__note">{practical.contact.note}</p>
+      </div>
+
+      <aside class="karte__side" aria-labelledby="book-title">
+        <div class="box box--ember book" data-in="wipe">
+          <p class="box__label">{practical.kicker} <span class="box__rule" aria-hidden="true" /></p>
+          <p class="book__title" id="book-title">Reservieren</p>
+        </div>
+        <Engraving src={assets.engravings.telefon} class="book__engr" />
+        <a class="book__phone" href={practical.contact.phoneHref}>{practical.contact.phone}</a>
+        <dl class="book__facts">
+          <div>
+            <dt>{practical.hours.label}</dt>
+            <dd>{practical.hours.lines[0]}<br />{practical.hours.lines[1]}<br /><em>{practical.hours.note}</em></dd>
+          </div>
+          <div>
+            <dt>{practical.address.label}</dt>
+            <dd>{practical.address.lines[0]}<br />{practical.address.lines[1]}</dd>
+          </div>
+        </dl>
+        <p class="book__sub">{practical.cta.sub}</p>
+        <a class="btn btn--ember btn--block" href={practical.cta.href}><Icon name="phone" />{practical.cta.label}</a>
+      </aside>
+    </div>
+  </div>
+</section>

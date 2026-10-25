@@ -1,29 +1,38 @@
 ---
 import { site } from '../content/site';
 import Fenster from './Fenster.astro';
+import Engraving from './Engraving.astro';
 import Icon from './Icon.astro';
-const { events } = site.tour;
+const { tour, assets } = site;
+const { events } = tour;
 ---
 
 <section class="section feste" id="feste" aria-labelledby="feste-title">
-  <div class="wrap grid">
-    <div class="feste__text lede">
-      <h2 class="t-d2" id="feste-title">{events.headline}</h2>
-      <p class="t-body">{events.body}</p>
-      <ul class="occasions t-meta" aria-label="Anlässe">
-        {events.marquee.map((o) => <li>{o}</li>)}
-      </ul>
-      <p>
-        <a class="link link--arrow" href={events.cta.href}>
-          {events.cta.label} <Icon name="arrow" />
-        </a>
-      </p>
+  <div class="wrap">
+    <p class="box box--butter feste__label" data-in="wipe">
+      <span class="box__label">{events.kicker}</span><span class="box__rule" aria-hidden="true" />
+    </p>
+    <h2 class="feste__title" id="feste-title" data-split>{events.headline}</h2>
+  </div>
+
+  <div class="marquee marquee--lake" data-marquee data-speed="-0.5" aria-hidden="true">
+    <div class="marquee__track">
+      {events.marquee.map((o) => <><span class="marquee__item">{o}</span><span class="marquee__star">✦</span></>)}
     </div>
+  </div>
+  <ul class="sr-only" aria-label="Anlässe">{events.marquee.map((o) => <li>{o}</li>)}</ul>
+
+  <div class="wrap feste__grid">
     <div class="feste__a">
-      <Fenster win={site.windows.haus} sizes="(min-width: 900px) 64vw, 100vw" />
+      <Fenster win={site.windows.haus} sizes="(min-width: 1100px) 820px, 100vw" />
+    </div>
+    <div class="feste__text">
+      <Engraving src={assets.engravings.feste} class="feste__engr" />
+      <p class="dropcap" data-in="rise">{events.body}</p>
+      <a class="btn btn--double" href={events.cta.href}><Icon name="mail" />{events.cta.label}</a>
     </div>
     <div class="feste__b">
-      <Fenster win={site.windows.terrasse} sizes="(min-width: 900px) 22vw, 85vw" />
+      <Fenster win={site.windows.terrasse} sizes="(min-width: 1100px) 440px, 100vw" />
     </div>
   </div>
 </section>

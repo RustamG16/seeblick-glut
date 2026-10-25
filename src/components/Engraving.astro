@@ -1,0 +1,11 @@
+---
+import { url } from '../lib/url';
+// A pen engraving on the card: draws in from the top on entry, sways on hover. Decorative.
+interface Props {
+  src: string;
+  class?: string;
+}
+const { src, class: className } = Astro.props;
+---
+
+<img class:list={['engr', className]} src={url(src)} alt="" width="600" height="560" loading="lazy" decoding="async" data-in="engr" />
